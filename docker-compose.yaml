@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  pubsub-emulator:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:367.0.0-emulators
+    command:
+      [
+        "gcloud",
+        "beta",
+        "emulators",
+        "pubsub",
+        "start",
+        "--host-port=0.0.0.0:8085",
+        "--project=dev-pubsub-project"
+      ]
+    ports:
+      - "8085:8085"
+
+  mongo:
+    image: mvertes/alpine-mongo
+    ports:
+      - '27017:27017'
