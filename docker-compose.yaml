@@ -17,6 +17,15 @@ services:
       - "8085:8085"
 
   mongo:
-    image: mvertes/alpine-mongo
+    image: mongo:5.0
     ports:
       - '27017:27017'
+    volumes:
+      - mongodbdata:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=S3cret
+      - MONGO_INITDB_DATABASE=bike4life
+
+volumes:
+  mongodbdata:

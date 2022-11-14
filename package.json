@@ -12,9 +12,12 @@
     "@google-cloud/pubsub": "^3.2.1",
     "core-js": "^3.6.5",
     "express": "^4.18.1",
+    "mongoose": "^6.7.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "regenerator-runtime": "0.13.7",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-express": "^4.6.0",
     "tslib": "^2.3.0",
     "winston": "^3.8.2"
   },

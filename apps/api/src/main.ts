@@ -1,16 +1,9 @@
-import * as express from 'express';
-import { Message } from '@bike4life/api-interfaces';
+import { config } from 'dotenv'
+config({ path: '../../.env' })
 
-const app = express();
+import App from './app/app';
+import IndexRoute from './app/routes/index.route';
 
-const greeting: Message = { message: 'Welcome to api!' };
+const app = new App([new IndexRoute()])
 
-app.get('/api', (req, res) => {
-  res.send(greeting);
-});
-
-const port = process.env.port || 3333;
-const server = app.listen(port, () => {
-  console.log('Listening at http://localhost:' + port + '/api');
-});
-server.on('error', console.error);
+app.listen()
