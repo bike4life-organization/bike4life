@@ -2,9 +2,11 @@ import { Application } from 'express'
 import * as express from 'express'
 import * as swaggerJSDoc from 'swagger-jsdoc'
 import * as swaggerUi from 'swagger-ui-express'
-import errorMiddleware from './middlewares/error.middleware'
-import { Routes } from '@bike4life/api-interfaces'
+import * as path from 'path'
 import { connect, set } from 'mongoose'
+
+import { Routes } from '@bike4life/api-interfaces'
+import errorMiddleware from './middlewares/error.middleware'
 import { mongoConnectionSettings } from './settings'
 
 class App {
@@ -53,14 +55,15 @@ class App {
 
   private initializeSwagger(): void {
     const options = {
-      swaggerDefinition: {
+      failOnErrors: true,
+      definition: {
+        openapi: '3.0.0',
         info: {
-          title: 'Bike4Life API',
+          title: 'Hello World',
           version: '1.0.0',
-          description: 'Bike4Life API',
         },
       },
-      apis: ['swagger.yaml'],
+      apis: [path.join(__dirname, 'swagger.yaml')],
     }
 
     const specs = swaggerJSDoc(options)
