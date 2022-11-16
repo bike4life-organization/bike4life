@@ -1,4 +1,4 @@
-# Bike4Life
+# Bike4Life APIs
 
 ## Local dev instructions
 In order to start developing within the local environment you must first execute this command:
