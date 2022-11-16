@@ -6,7 +6,7 @@ on:
       - develop
   pull_request:
     paths:
-      - 'apps/api/**'
+      - 'apps/auth-api/**'
       - 'apps/notifier/**'
       - 'libs/**'
       - '.github/workflows/backend-ci.yaml'
@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         component:
-          - api
+          - auth-api
           - notifier
     env:
       COMPONENT: ${{ matrix.component }}
