@@ -1,12 +1,12 @@
 import { logger, PubSubClient } from '@bike4life/commons'
 import { Message } from '@google-cloud/pubsub'
 
-const { PUBSUB_PROJECT_ID, PUBSUB_SUBSCRIPTION_NAME, PUBSUB_TOPIC_NAME } = process.env
+const { PUBSUB_PROJECT_ID, NOTIFIER_PUBSUB_SUBSCRIPTION_NAME, NOTIFIER_PUBSUB_TOPIC_NAME } = process.env
 
 const pubsubSettings = {
   projectId: PUBSUB_PROJECT_ID,
-  subscriptionName: PUBSUB_SUBSCRIPTION_NAME,
-  topicName: PUBSUB_TOPIC_NAME
+  subscriptionName: NOTIFIER_PUBSUB_SUBSCRIPTION_NAME,
+  topicName: NOTIFIER_PUBSUB_TOPIC_NAME
 }
 
 export default async function startPullListener(): Promise<void> {
