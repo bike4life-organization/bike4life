@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import {logger} from '@bike4life/commons'
-import { HttpException } from "../exceptions/http-exception";
+import { HttpException } from '@bike4life/commons';
 
 const errorMiddleware = (err: HttpException, req: Request, res: Response, next: NextFunction) => {
   try {
@@ -8,6 +8,7 @@ const errorMiddleware = (err: HttpException, req: Request, res: Response, next: 
     const message = err.message || 'Something went wrong';
 
     logger.error(`[${req.method} ${req.path}] >> Status code: ${status}, Message: ${message}`);
+    res.status(status).send(message);
   } catch (error) {
     next(error)
   }
