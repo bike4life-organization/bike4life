@@ -13,6 +13,7 @@ class IndexRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.indexController.index);
+    //this.router.get(`${this.path}populate`, this.indexController.populate);
   }
 }
 
