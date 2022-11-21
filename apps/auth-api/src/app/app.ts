@@ -3,14 +3,16 @@ import * as express from 'express'
 import * as swaggerJSDoc from 'swagger-jsdoc'
 import * as swaggerUi from 'swagger-ui-express'
 import * as path from 'path'
-import { connect, set } from 'mongoose'
+import mongoose, { connect, set } from 'mongoose'
 
 import { Routes } from '@bike4life/api-interfaces'
 import errorMiddleware from './middlewares/error.middleware'
 import { mongoConnectionSettings } from './settings'
+import { Server } from 'http'
 
 class App {
   app: Application
+  server: Server
   env: string
   port: string | number
 
@@ -26,10 +28,28 @@ class App {
     this.initializeErrorHandling()
   }
 
-  listen(): void {
-    this.app.listen(this.port, () => {
-      console.log(`App listening on the port ${this.port}`)
+  async listen(): Promise<Server> {
+    return new Promise((resolve, reject) => {
+      this.server = this.app.listen(this.port)
+
+      this.server.once('error', err => reject(err))
+      this.server.once('listening', () => resolve(this.server as Server))
     })
+  }
+
+  async stop(): Promise<void> {
+    await new Promise((resolve) => {
+      if (!this.server) {
+        return resolve(true)
+      }
+
+      this.server.once('close', () => {
+        this.server = undefined
+        resolve(true)
+      })
+      this.server.close()
+    })
+    await mongoose.connection.close()
   }
 
   connectToDatabase(): void {
