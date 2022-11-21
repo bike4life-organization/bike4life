@@ -8,6 +8,8 @@ on:
     paths:
       - 'apps/auth-api/**'
       - 'apps/notifier/**'
+      - 'apps/route-checker/**'
+      - 'apps/routes-api/**'
       - 'libs/**'
       - '.github/workflows/backend-ci.yaml'
 
@@ -21,6 +23,8 @@ jobs:
         component:
           - auth-api
           - notifier
+          - route-checker
+          - routes-api
     env:
       COMPONENT: ${{ matrix.component }}
     steps:
@@ -29,7 +33,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 16.x
       - name: Install dependencies
         run: npm install
       - name: Test
