@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { RoutesService }  from '../services/routes.service';
 
-
-
 class RoutesController {
 
     private routesService:  RoutesService
@@ -10,18 +8,6 @@ class RoutesController {
     constructor(){
         this.routesService = new RoutesService();
     }
-
-
-
-
-  /*public index = (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.sendStatus(200);
-    } catch (error) {
-      next(error);
-    }
-  };*/
-  
 
   public createRoute = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -37,8 +23,5 @@ class RoutesController {
       next(error)
     }
   };
-
-
 }
-
 export default RoutesController;

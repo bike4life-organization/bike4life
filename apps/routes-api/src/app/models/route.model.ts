@@ -10,7 +10,6 @@ export interface Route{
 
 }
 
-
 const routeSchema = new Schema<Route>({
     coordinates: {
         type: Schema.Types.Mixed,

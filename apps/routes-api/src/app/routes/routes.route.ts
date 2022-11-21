@@ -14,8 +14,6 @@ class RoutesRoute implements Routes {
   private initializeRoutes() {
     this.router.post(`${this.path}`, this.routesController.createRoute);
   }
-
-
 }
 
 export default RoutesRoute;
