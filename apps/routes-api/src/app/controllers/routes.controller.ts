@@ -12,7 +12,6 @@ class RoutesController {
     public removeRoute = async (req: Request, res: Response, next: NextFunction) => {
       try {
         const  id  = req.params.id
-        //const routeToDelete = await this.routesService.removeRoute(id)
         this.routesService.removeRoute(id)
         res.sendStatus(200)
       } catch (error) {
