@@ -1,6 +1,7 @@
-import { Router } from 'express';
-import { Routes } from '@bike4life/api-interfaces';
-import UsersController from '../controllers/users.controller';
+import { Router } from 'express'
+import { Routes } from '@bike4life/api-interfaces'
+import UsersController from '../controllers/users.controller'
+import { authMiddleware } from '@bike4life/commons'
 
 class UsersRoute implements Routes {
   public path = '/users';
@@ -12,8 +13,12 @@ class UsersRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/:id`, this.usersController.get)
+    this.router.post(`${this.path}/login`, this.usersController.login)
     this.router.post(this.path, this.usersController.create)
+
+    // Authenticated requests
+    this.router.use(authMiddleware)
+    this.router.get(`${this.path}/me`, this.usersController.me)
   }
 }
 

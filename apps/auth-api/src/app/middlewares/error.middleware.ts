@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import {logger} from '@bike4life/commons'
+import { logger } from '@bike4life/commons'
 import { HttpException } from '@bike4life/commons';
 
 const errorMiddleware = (err: HttpException, req: Request, res: Response, next: NextFunction) => {
