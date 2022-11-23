@@ -9,6 +9,8 @@ export interface User {
   username: string
   emailVerified: boolean
   createdAt: Date
+  firstName?: string
+  lastName?: string
   password?: string
   avatar?: string
   _id?: string

@@ -19,6 +19,8 @@ class UsersRoute implements Routes {
     // Authenticated requests
     this.router.use(authMiddleware)
     this.router.get(`${this.path}/me`, this.usersController.me)
+    this.router.delete(`${this.path}`, this.usersController.delete)
+    this.router.put(`${this.path}`, this.usersController.update)
   }
 }
 
