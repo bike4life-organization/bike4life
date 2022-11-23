@@ -1,2 +1,6 @@
 node_modules
 dist
+.terraform
+.DS_store
+*.backup
+SAs
