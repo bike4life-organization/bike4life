@@ -27,7 +27,15 @@ const userSchema = new Schema<User>({
   emailVerified: {
     type: Boolean,
     default: false
-  }
+  },
+  firstName: {
+    type: String,
+    required: false
+  },
+  lastName: {
+    type: String,
+    required: false
+  },
 })
 
 export const UserModel = model<User>('User', userSchema)

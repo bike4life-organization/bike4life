@@ -63,4 +63,26 @@ describe('Users route', () => {
       email: mockUser.email
     })
   })
+
+  test('UPDATE /users should return a 200', async () => {
+    mockingoose(UserModel).toReturn(mockUser, 'findOne');
+    mockingoose(UserModel).toReturn(mockUser, 'update');
+
+    const response = await request(server).put(`/users`).send({ firstName: 'TestName' })
+    expect(response.status).toBe(200)
+    expect(response.body).toMatchObject({
+      username: mockUser.username,
+      email: mockUser.email,
+      emailVerified: false,
+      avatar: expect.any(String),
+      _id: expect.any(String),
+    })
+  })
+
+  test('DELETE /users should return a 204', async () => {
+    mockingoose(UserModel).toReturn(mockUser, 'deleteOne');
+
+    const response = await request(server).delete(`/users`)
+    expect(response.status).toBe(204)
+  })
 })
