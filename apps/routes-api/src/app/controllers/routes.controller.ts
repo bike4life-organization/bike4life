@@ -12,10 +12,6 @@ class RoutesController {
   public createRoute = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newRoute = req.body
-
-      console.log(`newRoute: ${JSON.stringify(newRoute, null, 2)}`)
-
-
       this.routesService.createRoute(newRoute)
       res.sendStatus(200)
   

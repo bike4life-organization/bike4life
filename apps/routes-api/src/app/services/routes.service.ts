@@ -4,7 +4,7 @@ export class RoutesService{
 
     async createRoute(newRoute: Route): Promise <Route> {
             const result = await RouteModel
-             .create(newRoute)
+            .create(newRoute)
             return result
         
     } 
