@@ -1,7 +1,7 @@
 import * as crypto from 'crypto'
 
 const ENCRYPTION_ALGORITHM = 'aes-256-ctr'
-const ENCRYPTION_SECRET_KEY = process.env.ENCRYPTION_SECRET_KEY || '12345678901234567890123456789012'
+const ENCRYPTION_SECRET_KEY = process.env.ENCRYPTION_SECRET_KEY
 const ENCRYPTION_IV_LENGTH = 16
 
 export function encryptString (plaintextValue: string): string {
