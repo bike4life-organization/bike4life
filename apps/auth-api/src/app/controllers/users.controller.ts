@@ -40,6 +40,7 @@ class UsersController {
       await this.usersService.createUser(user)
       res.sendStatus(201)
     } catch (error) {
+      console.log(error)
       const validatedError = checkError(error)
       next(validatedError);
     }
@@ -51,6 +52,7 @@ class UsersController {
       const token = await this.usersService.login(email, password)
       res.send({ token })
     } catch (error) {
+      console.log(error)
       const validatedError = checkError(error)
       next(validatedError);
     }

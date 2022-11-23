@@ -53,7 +53,7 @@ class App {
   }
 
   connectToDatabase(): void {
-    if (this.env !== 'production') {
+    if (this.env === 'development') {
       set('debug', true)
     }
 
