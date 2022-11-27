@@ -13,4 +13,10 @@ export class RoutesService {
             .create(newRoute)
         return result
     }
+
+    async getRouteById(id: string): Promise<Route> {
+        return RouteModel
+            .findById(id)
+            .exec()
+    }
 }

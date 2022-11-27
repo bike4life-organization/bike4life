@@ -1,3 +1,4 @@
+import { checkError } from '@bike4life/commons';
 import { NextFunction, Request, Response } from 'express';
 import { RoutesService } from '../services/routes.service';
 
@@ -14,6 +15,16 @@ class RoutesController {
       const id = req.params.id
       this.routesService.removeRoute(id)
       res.sendStatus(200)
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public get = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params
+      const route = await this.routesService.getRouteById(id)
+      res.send(route)
     } catch (error) {
       next(error);
     }

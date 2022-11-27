@@ -1,7 +1,7 @@
-import {Schema, model}  from 'mongoose'
+import { Schema, model } from 'mongoose'
 
-export interface Route{
-    coordinates: Number[][]
+export interface Route {
+    coordinates: number[][]
     date: Date
     name: string
     description: string
@@ -35,7 +35,6 @@ const routeSchema = new Schema<Route>({
         type: String,
         required: false
     }
-    
 })
 
 export const RouteModel = model<Route>('Route', routeSchema)
