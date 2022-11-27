@@ -12,7 +12,8 @@ class RoutesRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.delete(`${this.path}/:id`, this.routesController.removeRoute);
+    this.router.delete(`${this.path}/:id`, this.routesController.removeRoute)
+    this.router.post(`${this.path}`, this.routesController.createRoute)
   }
 }
 

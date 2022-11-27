@@ -1,22 +1,33 @@
 import { NextFunction, Request, Response } from 'express';
-import { RoutesService }  from '../services/routes.service';
+import { RoutesService } from '../services/routes.service';
 
 class RoutesController {
 
-    private routesService:  RoutesService
+  private routesService: RoutesService
 
-    constructor(){
-        this.routesService = new RoutesService();
-    }
+  constructor() {
+    this.routesService = new RoutesService();
+  }
 
-    public removeRoute = async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const  id  = req.params.id
-        this.routesService.removeRoute(id)
-        res.sendStatus(200)
-      } catch (error) {
-        next(error);
-      }
+  public removeRoute = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id
+      this.routesService.removeRoute(id)
+      res.sendStatus(200)
+    } catch (error) {
+      next(error);
     }
+  }
+
+  public createRoute = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const newRoute = req.body
+      this.routesService.createRoute(newRoute)
+      res.sendStatus(200)
+
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 export default RoutesController;

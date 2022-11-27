@@ -1,10 +1,16 @@
-import {Route, RouteModel} from "../models/route.model"
+import { Route, RouteModel } from "../models/route.model"
 
-export class RoutesService{
+export class RoutesService {
 
-    async removeRoute(id: string): Promise <Route> {
+    async removeRoute(id: string): Promise<Route> {
         const result = await RouteModel
-        .findByIdAndDelete(id)
+            .findByIdAndDelete(id)
         return result
-    } 
+    }
+
+    async createRoute(newRoute: Route): Promise<Route> {
+        const result = await RouteModel
+            .create(newRoute)
+        return result
+    }
 }
