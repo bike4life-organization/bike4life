@@ -19,4 +19,9 @@ export class RoutesService {
             .findById(id)
             .exec()
     }
+
+    async updateRoute(putRoute: Route, id: string): Promise<Route> {
+        const result = await RouteModel.findByIdAndUpdate(id, putRoute)
+        return result
+    }
 }

@@ -40,5 +40,16 @@ class RoutesController {
       next(error)
     }
   }
+
+  public updateRoute = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const newRoute = req.body
+      const idRoute = req.params.id
+      this.routesService.updateRoute(newRoute, idRoute)
+      res.sendStatus(201)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 export default RoutesController;
