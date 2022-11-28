@@ -18,7 +18,7 @@ export default async function startPullListener(): Promise<void> {
     subscription.on('message', async (message: Message) => {
       const { attributes } = message
 
-      logger.info(`received message from topic ${attributes.topic}: ${message.id}, ${message.data.toString()}`)
+      logger.info(`Received message from topic ${pubsubSettings.topicName}: ${message.id} Attributes: ${JSON.stringify(attributes)}, Data: ${message.data.toString()}`)
       message.ack() // we ack or we will get it redelivered
     })
 

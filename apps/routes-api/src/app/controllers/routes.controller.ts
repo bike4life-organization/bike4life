@@ -1,4 +1,3 @@
-import { checkError } from '@bike4life/commons';
 import { NextFunction, Request, Response } from 'express';
 import { RoutesService } from '../services/routes.service';
 
@@ -13,7 +12,7 @@ class RoutesController {
   public removeRoute = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = req.params.id
-      this.routesService.removeRoute(id)
+      await this.routesService.removeRoute(id)
       res.sendStatus(200)
     } catch (error) {
       next(error);
@@ -33,9 +32,8 @@ class RoutesController {
   public createRoute = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newRoute = req.body
-      this.routesService.createRoute(newRoute)
+      await this.routesService.createRoute(newRoute)
       res.sendStatus(200)
-
     } catch (error) {
       next(error)
     }
@@ -45,7 +43,7 @@ class RoutesController {
     try {
       const newRoute = req.body
       const idRoute = req.params.id
-      this.routesService.updateRoute(newRoute, idRoute)
+      await this.routesService.updateRoute(newRoute, idRoute)
       res.sendStatus(201)
     } catch (error) {
       next(error)

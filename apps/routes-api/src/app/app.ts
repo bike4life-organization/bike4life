@@ -37,8 +37,12 @@ class App {
       set('debug', true)
     }
 
-    connect(mongoConnectionSettings.url, () => {
-      console.log('Connected to database!')
+    connect(mongoConnectionSettings.url, (error) => {
+      if (error) {
+        console.log('Error connecting to database: ', error)
+      } else {
+        console.log('Connected to database')
+      }
     })
   }
 
