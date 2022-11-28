@@ -2,7 +2,6 @@ import { logger, PubSubClient } from '@bike4life/commons'
 import { Message } from '@google-cloud/pubsub'
 import  { MailService } from '@sendgrid/mail'
 
-import * as fs from 'fs';
 import * as nunjucks from "nunjucks";
 
 import { sendgridSettings as sd } from './app/settings';
@@ -53,9 +52,13 @@ export default async function startPullListener(): Promise<void> {
         msg.html = templateRouteOptimized
       }
 
-      sgMail.send(msg).catch(err => {
-        console.log(err);
-      });
+      //send email with sendgrid
+      try {
+        await sgMail.send(msg);
+      } catch (error) {
+        console.log(error);
+        throw new error;
+      }
 
       logger.info(`received message from topic ${attributes.topic}: ${message.id}, ${message.data.toString()}`)
       message.ack() // we ack or we will get it redelivered
