@@ -2,12 +2,13 @@ import { logger, PubSubClient } from '@bike4life/commons'
 import { Message } from '@google-cloud/pubsub'
 import  { MailService } from '@sendgrid/mail'
 
+import * as fs from 'fs';
+import * as nunjucks from "nunjucks";
+
 import { sendgridSettings as sd } from './app/settings';
 
-import fs = require("fs");
-import nunjucks = require("nunjucks");
-import path = require('path');
-import { toUSVString } from 'util';
+//import path = require('path');
+//import { toUSVString } from 'util';
 
 const pubsubSettings = {
   projectId: sd.PUBSUB_PROJECT_ID,
@@ -18,6 +19,8 @@ const pubsubSettings = {
 export default async function startPullListener(): Promise<void> {
   const pubsubClient = new PubSubClient(pubsubSettings.projectId, logger)
   const sgMail = new MailService();
+
+  const myFile = __dirname + '/assets/views/hola.html';
 
   try {
     const subscription = await pubsubClient.getSubscription(pubsubSettings.topicName, pubsubSettings.subscriptionName)
@@ -30,29 +33,25 @@ export default async function startPullListener(): Promise<void> {
       const { topic } = attributes;
       const dataJson = JSON.parse(message.data.toString());
 
-      //const pathToAttachment = `${__dirname}/src/assets/views/hola.html`;
+      //read html
+      const readData = fs.readFileSync(myFile, 'utf8');
+      console.log(readData)
+      //const pathToAttachment = `${__dirname}/src/assets/views/base.html`;
       //const attachment = fs.readFileSync(pathToAttachment,'utf8');
-      //console.log("antes del template")
-      //nunjucks.configure('views',{autoescape: true});
-      //console.log("en medio del template") 
-      // D:\Escritorio\Master\Fundamentos de cloud\bike4life\apps\notifier\src\views\base.html
-      // D:\Escritorio\Master\Fundamentos de cloud\bike4life\apps\notifier\src\pull-listener.ts
+      
+      //nunjucks.configure(__dirname+'/src/views/',{autoescape: true});
+      //const nunTemplate = nunjucks.render('base.html',dataJson);
+      //console.log(__dirname+'/src/views/');
 
-      //const Nuntemplate = nunjucks.render('/views/base.html',dataJson);
-      //console.log("despues del template")
+      console.log(__dirname)
     
       const msg = {
         to: dataJson.user_email,
         from: sd.TO_REPLY_TO_EMAIL_SENDGRID,
         reply_to: sd.TO_REPLY_TO_EMAIL_SENDGRID,
         subject: 'User created correctly',
-        /*content:[
-          {
-            type: 'text/html',
-            value: '<h1>HOLA</h1>'
-          }
-        ],*/
         text: "hola",
+        html: readData,
         /*attachments: [
           {
             content: attachment,
