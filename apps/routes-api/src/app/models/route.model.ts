@@ -7,7 +7,7 @@ export interface Route {
     description: string
     estimatedDuration: number
     userId: string
-
+    _id?: string
 }
 
 const routeSchema = new Schema<Route>({
