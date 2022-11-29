@@ -9,7 +9,7 @@ export default async function startPullListener(): Promise<void> {
         const subscription = await pubSubClient.getSubscription(pubSubSettings.topicName, pubSubSettings.subscriptionName)
 
         subscription.on('message', async (message: Message) => {
-            pullListenerService.handleEvents(message.attributes?.type, JSON.parse(message.data.toString()))
+            await pullListenerService.handleEvents(message.attributes?.type, JSON.parse(message.data.toString()))
             message.ack()
         })
 

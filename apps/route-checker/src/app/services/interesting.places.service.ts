@@ -4,12 +4,12 @@ import {InterestingPlaces} from "../types/types";
 
 class InterestingPlacesService {
 
-    createInterestingPlaces(places: InterestingPlaces[]) {
-        InterestingPlacesModel.insertMany(places).then();
+    async createInterestingPlaces(places: InterestingPlaces[]) {
+        await InterestingPlacesModel.insertMany(places);
     }
 
-    removeInterestingPlaces(id: string) {
-        InterestingPlacesModel.deleteMany({routeId: id});
+    async removeInterestingPlaces(id: string) {
+        await InterestingPlacesModel.deleteMany({routeId: id});
     }
 
 }

@@ -4,13 +4,13 @@ import mapService from "./map.service";
 
 class PullListenerService {
 
-    handleEvents(type: string, event: EventData) {
+    async handleEvents(type: string, event: EventData) {
         if (EventType.CREATED !== type && EventType.UPDATED !== type)
             return;
         if (!event?._id?.length || !event?.coordinates?.length)
             return;
         if (EventType.UPDATED === type)
-            interestingPlacesService.removeInterestingPlaces(event._id);
+            await interestingPlacesService.removeInterestingPlaces(event._id);
         mapService.findPlacesByBBox(event.coordinates).then(response => {
             if (!this.isOK(response))
                 return;
