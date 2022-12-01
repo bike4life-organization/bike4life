@@ -1,4 +1,4 @@
-import { checkError } from '@bike4life/commons';
+import { AuthenticatedRequest, checkError } from '@bike4life/commons';
 import { NextFunction, Request, Response } from 'express';
 import { RoutesService } from '../services/routes.service';
 
@@ -10,7 +10,7 @@ class RoutesController {
     this.routesService = new RoutesService();
   }
 
-  public removeRoute = async (req: Request, res: Response, next: NextFunction) => {
+  public removeRoute = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
       const id = req.params.id
       this.routesService.removeRoute(id)
@@ -41,7 +41,7 @@ class RoutesController {
     }
   }
 
-  public updateRoute = async (req: Request, res: Response, next: NextFunction) => {
+  public updateRoute = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
       const newRoute = req.body
       const idRoute = req.params.id
