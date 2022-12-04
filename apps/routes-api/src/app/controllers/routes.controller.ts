@@ -12,9 +12,15 @@ class RoutesController {
 
   public removeRoute = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-      const id = req.params.id
-      this.routesService.removeRoute(id)
-      res.sendStatus(200)
+      const id_route = req.params._id
+      const id_route_user = req.params.userId
+      const id_user = req.user._id
+      if( id_route_user = id_user){
+        this.routesService.removeRoute(id_route)
+        res.sendStatus(200)
+      }else {
+        res.sendStatus(403)    
+      }
     } catch (error) {
       next(error);
     }
@@ -43,10 +49,19 @@ class RoutesController {
 
   public updateRoute = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
+      // the newRoute and the oldRouteId
       const newRoute = req.body
       const idRoute = req.params.id
-      this.routesService.updateRoute(newRoute, idRoute)
-      res.sendStatus(201)
+      // THE 
+      const id_route_user = req.params.userId
+      const id_user = req.user._id
+
+      if( id_route_user = id_user){
+        this.routesService.updateRoute(newRoute, idRoute)
+        res.sendStatus(200)
+      }else {
+        res.sendStatus(403)    
+      }
     } catch (error) {
       next(error)
     }
