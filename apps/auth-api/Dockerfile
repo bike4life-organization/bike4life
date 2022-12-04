@@ -13,7 +13,7 @@ RUN npm ci
 COPY --chown=node:node . .
 
 # Run the build command which creates the production bundle
-RUN npm run build notifier
+RUN npm run build auth-api
 
 ###################
 # PRODUCTION
@@ -31,7 +31,7 @@ RUN npm ci --only=production && npm cache clean --force
 
 # Copy the bundled code from the build stage to the production image
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/src/app/dist/apps/notifier ./dist
+COPY --chown=node:node --from=build /usr/src/app/dist/apps/auth-api ./dist
 
 # Start the server using the production build
 CMD [ "node", "dist/main.js" ]

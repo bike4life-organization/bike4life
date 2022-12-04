@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   pubsub-emulator:
@@ -11,45 +11,81 @@ services:
         "pubsub",
         "start",
         "--host-port=0.0.0.0:8085",
-        "--project=dev-pubsub-project"
+        "--project=dev-pubsub-project",
       ]
     ports:
       - "8085:8085"
 
-  notifier:
+  auth-api:
     build:
-      context: ./
-      dockerfile: ./apps/notifier/Dockerfile
+      context: .
+      dockerfile: ./apps/auth-api/Dockerfile
     ports:
-      - '3000:3000'
-    volumes:
-      - ./apps/notifier:/app
-      - ./apps/notifier/node_modules:/app/node_modules
-    restart: 'unless-stopped'
+      - "3001:3333"
+    restart: "unless-stopped"
     links:
       - mongo
+      - pubsub-emulator
     depends_on:
       - mongo
-    env_file: .env
+      - pubsub-emulator
+    env_file: .env.production
 
-  # auth-api:
-  #   build:
-  #     context: ./auth-api/
-  #     target: development-build-stage
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - '3001:3000'
-  #   volumes:
-  #     - ./auth-api:/app
-  #     - ./auth-api/node_modules:/app/node_modules
-  #   restart: 'unless-stopped'
-  #   links:
-  #     - mongo
-  #   depends_on:
-  #     - mongo
-  #   env_file: .env
+  routes-api:
+    build:
+      context: .
+      dockerfile: ./apps/routes-api/Dockerfile
+    ports:
+      - "3002:3333"
+    restart: "unless-stopped"
+    links:
+      - mongo
+      - pubsub-emulator
+    depends_on:
+      - mongo
+      - pubsub-emulator
+    env_file: .env.production
+
+  notifier:
+    build:
+      context: .
+      dockerfile: ./apps/notifier/Dockerfile
+    ports:
+      - "3003:3333"
+    restart: "unless-stopped"
+    links:
+      - mongo
+      - pubsub-emulator
+    depends_on:
+      - mongo
+      - pubsub-emulator
+    env_file: .env.production
+
+  route-checker:
+    build:
+      context: .
+      dockerfile: ./apps/route-checker/Dockerfile
+    ports:
+      - "3004:3333"
+    restart: "unless-stopped"
+    links:
+      - mongo
+      - pubsub-emulator
+    depends_on:
+      - mongo
+      - pubsub-emulator
+    env_file: .env.production
 
   mongo:
-    image: mvertes/alpine-mongo
+    image: mongo:5.0
     ports:
-      - '27017:27017'
+      - "27017:27017"
+    volumes:
+      - mongodbdata:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=S3cret
+      - MONGO_INITDB_DATABASE=bike4life
+
+volumes:
+  mongodbdata:

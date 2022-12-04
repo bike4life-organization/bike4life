@@ -1,0 +1,40 @@
+name: Backend - CI
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    paths:
+      - 'apps/auth-api/**'
+      - 'apps/notifier/**'
+      - 'apps/route-checker/**'
+      - 'apps/routes-api/**'
+      - 'libs/**'
+      - '.github/workflows/backend-ci.yaml'
+
+jobs:
+  build-apis:
+    name: "${{ matrix.component }}: Test"
+    runs-on: ubuntu-20.04
+    timeout-minutes: 4
+    strategy:
+      matrix:
+        component:
+          - auth-api
+          - notifier
+          - route-checker
+          - routes-api
+    env:
+      COMPONENT: ${{ matrix.component }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: Install dependencies
+        run: npm install
+      - name: Test
+        run: npm run test $COMPONENT

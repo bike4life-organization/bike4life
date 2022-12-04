@@ -1,12 +1,12 @@
 import { logger, PubSubClient } from '@bike4life/commons'
 import { Message } from '@google-cloud/pubsub'
 
-const { PUBSUB_PROJECT_ID, NOTIFIER_PUBSUB_SUBSCRIPTION_NAME, NOTIFIER_PUBSUB_TOPIC_NAME } = process.env
+const { PUBSUB_PROJECT_ID, ROUTE_CHECKER_PUBSUB_SUBSCRIPTION_NAME, ROUTE_CHECKER_PUBSUB_TOPIC_NAME } = process.env
 
 const pubsubSettings = {
   projectId: PUBSUB_PROJECT_ID,
-  subscriptionName: NOTIFIER_PUBSUB_SUBSCRIPTION_NAME,
-  topicName: NOTIFIER_PUBSUB_TOPIC_NAME
+  subscriptionName: ROUTE_CHECKER_PUBSUB_SUBSCRIPTION_NAME,
+  topicName: ROUTE_CHECKER_PUBSUB_TOPIC_NAME
 }
 
 export default async function startPullListener(): Promise<void> {
@@ -21,7 +21,6 @@ export default async function startPullListener(): Promise<void> {
       logger.info(`received message from topic ${attributes.topic}: ${message.id}, ${message.data.toString()}`)
       message.ack() // we ack or we will get it redelivered
     })
-
 
     // Receive callbacks for errors on the subscription
     subscription.on('error', err => {
