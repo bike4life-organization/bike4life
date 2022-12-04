@@ -49,10 +49,10 @@ class RoutesController {
 
   public updateRoute = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-      // the newRoute and the oldRouteId
+
       const newRoute = req.body
       const idRoute = req.params.id
-      // THE 
+
       const id_route_user = req.params.userId
       const id_user = req.user._id
 
