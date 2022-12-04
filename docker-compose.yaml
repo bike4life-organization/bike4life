@@ -1,21 +1,6 @@
 version: "3.7"
 
 services:
-  pubsub-emulator:
-    image: gcr.io/google.com/cloudsdktool/cloud-sdk:367.0.0-emulators
-    command:
-      [
-        "gcloud",
-        "beta",
-        "emulators",
-        "pubsub",
-        "start",
-        "--host-port=0.0.0.0:8085",
-        "--project=dev-pubsub-project",
-      ]
-    ports:
-      - "8085:8085"
-
   auth-api:
     build:
       context: .
@@ -75,17 +60,3 @@ services:
       - mongo
       - pubsub-emulator
     env_file: .env.production
-
-  mongo:
-    image: mongo:5.0
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodbdata:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=user
-      - MONGO_INITDB_ROOT_PASSWORD=S3cret
-      - MONGO_INITDB_DATABASE=bike4life
-
-volumes:
-  mongodbdata:
