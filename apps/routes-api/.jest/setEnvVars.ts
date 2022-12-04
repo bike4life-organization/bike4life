@@ -1,0 +1,7 @@
+process.env.JWT_SECRET = 'secret'
+process.env.ENCRYPTION_SECRET_KEY = '1234567a901234b6789012c456789012'
+process.env.MONGO_DB_HOST = 'localhost'
+process.env.MONGO_DB_PORT = '27017'
+process.env.MONGO_DB_ROUTE = 'mockRoute'
+process.env.MONGO_DB_PASSWORD = 'mockPass'
+process.env.MONGO_DB_DATABASE = 'mockDB'

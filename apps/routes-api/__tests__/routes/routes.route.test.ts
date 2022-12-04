@@ -6,7 +6,7 @@ import { Server } from 'http'
 import { mockRoute } from '../support/routes'
 import { RouteModel } from '../../src/app/models/route.model'
 
-/* jest.mock("@bike4life/commons", () => ({
+jest.mock("@bike4life/commons", () => ({
   authMiddleware: (req, res, next) => {
     req.user = mockRoute
     next()
@@ -17,7 +17,7 @@ import { RouteModel } from '../../src/app/models/route.model'
   encryptString: (password) => {
     return password
   }
-})); */
+}));
 
 describe('Routes route', () => {
   const app = new App([new RoutesRoute()])
