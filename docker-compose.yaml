@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   pubsub-emulator:
@@ -11,15 +11,75 @@ services:
         "pubsub",
         "start",
         "--host-port=0.0.0.0:8085",
-        "--project=dev-pubsub-project"
+        "--project=dev-pubsub-project",
       ]
     ports:
       - "8085:8085"
 
+  auth-api:
+    build:
+      context: .
+      dockerfile: ./apps/auth-api/Dockerfile
+    ports:
+      - "3001:3333"
+    restart: "unless-stopped"
+    links:
+      - mongo
+      - pubsub-emulator
+    depends_on:
+      - mongo
+      - pubsub-emulator
+    env_file: .env.production
+
+  routes-api:
+    build:
+      context: .
+      dockerfile: ./apps/routes-api/Dockerfile
+    ports:
+      - "3002:3333"
+    restart: "unless-stopped"
+    links:
+      - mongo
+      - pubsub-emulator
+    depends_on:
+      - mongo
+      - pubsub-emulator
+    env_file: .env.production
+
+  notifier:
+    build:
+      context: .
+      dockerfile: ./apps/notifier/Dockerfile
+    ports:
+      - "3003:3333"
+    restart: "unless-stopped"
+    links:
+      - mongo
+      - pubsub-emulator
+    depends_on:
+      - mongo
+      - pubsub-emulator
+    env_file: .env.production
+
+  route-checker:
+    build:
+      context: .
+      dockerfile: ./apps/route-checker/Dockerfile
+    ports:
+      - "3004:3333"
+    restart: "unless-stopped"
+    links:
+      - mongo
+      - pubsub-emulator
+    depends_on:
+      - mongo
+      - pubsub-emulator
+    env_file: .env.production
+
   mongo:
     image: mongo:5.0
     ports:
-      - '27017:27017'
+      - "27017:27017"
     volumes:
       - mongodbdata:/data/db
     environment:
