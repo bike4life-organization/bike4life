@@ -6,10 +6,10 @@ class SendGridService {
   async sendEmailWithTemplate(
     subject: string,
     user_email: string,
-    template: any
+    template: string
   ) {
     const sgMail = new MailService();
-    sgMail.setApiKey(sd.SENDGRID_APY_KEY);
+    sgMail.setApiKey(sd.SENDGRID_API_KEY);
 
     const msg = {
       to: user_email,
