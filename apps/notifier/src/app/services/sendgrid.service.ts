@@ -3,8 +3,11 @@ import { MailService } from "@sendgrid/mail";
 import { sendgridSettings as sd } from "../settings";
 
 class SendGridService {
-  async sendEmailWithTemplate(subject: string, user_email: string, template: any ) {
-    
+  async sendEmailWithTemplate(
+    subject: string,
+    user_email: string,
+    template: any
+  ) {
     const sgMail = new MailService();
     sgMail.setApiKey(sd.SENDGRID_APY_KEY);
 

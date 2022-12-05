@@ -16,7 +16,7 @@ class PullListenerService {
             file = FilenameType.ROUTE_OPTIMIZED;
         }
 
-        await sendGridService.sendEmailWithTemplate(subject, event.user_email, nunjucksService.obtainTemplate(file))
+        await sendGridService.sendEmailWithTemplate(subject, event.user_email, nunjucksService.obtainTemplate(file, event))
 
     }
 

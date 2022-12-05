@@ -1,10 +1,11 @@
 import * as nunjucks from "nunjucks";
+import { EventData } from "../types/types";
 
 class NunjucksService {
-  obtainTemplate(file: string) {
+  obtainTemplate(file: string, data: EventData) {
     const myFiles = __dirname + "/assets/views";
     nunjucks.configure(myFiles, { autoescape: true });
-    return nunjucks.render(file);
+    return nunjucks.render(file, data);
   }
 }
 
