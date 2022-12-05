@@ -3,7 +3,7 @@ import { MailService } from "@sendgrid/mail";
 import { sendgridSettings as sd } from "../settings";
 
 class SendGridService {
-  async sendEmail(subject: string, user_email: string ) {
+  async sendEmailWithTemplate(subject: string, user_email: string, template: any ) {
     
     const sgMail = new MailService();
     sgMail.setApiKey(sd.SENDGRID_APY_KEY);
@@ -13,7 +13,7 @@ class SendGridService {
       from: sd.TO_REPLY_TO_EMAIL_SENDGRID,
       reply_to: sd.TO_REPLY_TO_EMAIL_SENDGRID,
       subject: subject,
-      text: "HOLAAA",
+      html: template,
     };
 
     try {

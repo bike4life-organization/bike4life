@@ -1,18 +1,12 @@
 import * as nunjucks from "nunjucks";
 
 class NunjucksService {
-
-    obtainTemplate() {
-
-        const myFile = __dirname + '/assets/views';
-        nunjucks.configure(myFile,{autoescape: true});
-        const templateUserCreated = nunjucks.render("hola.html");
-        //const templateRouteOptimized = nunjucks.render("routeoptimized.html");
-
-        return templateUserCreated;
-    }
-
+  obtainTemplate(file: string) {
+    const myFiles = __dirname + "/assets/views";
+    nunjucks.configure(myFiles, { autoescape: true });
+    return nunjucks.render(file);
+  }
 }
 
 const nunjucksService = new NunjucksService();
-export default nunjucksService; 
+export default nunjucksService;

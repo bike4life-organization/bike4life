@@ -1,21 +1,23 @@
-import { EventData, EventType } from "../types/types";
+import { EventData, EventType, FilenameType, SubjectType } from "../types/types";
 import nunjucksService from "./nunjucks.service";
 import sendGridService from "./sendgrid.service";
 
 class PullListenerService {
 
     async handleEvents(type: string, event: EventData) {
-        if(EventType.USER_CREATED === type ) {
-            const template = nunjucksService.obtainTemplate();
-            console.log(`type.....`, template)
+        let [subject, file] = ["", ""]
 
-            const subject = "User Create correctly";
-            await sendGridService.sendEmail(subject, event.user_email)
-            return;
+        if(EventType.USER_CREATED === type ) {
+            subject = SubjectType.USER_CREATED;
+            file = FilenameType.USER_CREATED;
         }
         if(EventType.ROUTE_OPTIMIZED === type){
-            return;
+            subject = SubjectType.ROUTE_OPTIMIZED;
+            file = FilenameType.ROUTE_OPTIMIZED;
         }
+
+        await sendGridService.sendEmailWithTemplate(subject, event.user_email, nunjucksService.obtainTemplate(file))
+
     }
 
 }
