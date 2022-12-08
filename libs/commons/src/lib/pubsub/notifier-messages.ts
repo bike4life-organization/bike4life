@@ -8,3 +8,10 @@ export interface RouteOptimizedEventMessage {
   user_id: string;
   user_email: string;
 }
+
+export interface RouteCreatedEventMessage {
+  route_id: string;
+  user_id: string;
+  user_email: string;
+}
+
