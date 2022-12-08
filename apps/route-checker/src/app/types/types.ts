@@ -22,6 +22,7 @@ export interface InterestingPlaces {
 
 export enum EventType {
     CREATED = 'routeCreated',
-    UPDATED = 'routeUpdated'
+    UPDATED = 'routeUpdated',
+    DELETED = 'routeDeleted'
 }
 

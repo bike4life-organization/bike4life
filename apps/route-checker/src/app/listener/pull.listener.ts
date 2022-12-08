@@ -1,7 +1,7 @@
 import {logger, PubSubClient} from '@bike4life/commons'
 import {Message} from '@google-cloud/pubsub'
 import {pubSubSettings} from "../../../settings";
-import pullListenerService from "../services/pull.listener.service";
+import {getEventHandler} from "../services/event.handler.service";
 
 export default async function startPullListener(): Promise<void> {
     try {
@@ -9,7 +9,8 @@ export default async function startPullListener(): Promise<void> {
         const subscription = await pubSubClient.getSubscription(pubSubSettings.topicName, pubSubSettings.subscriptionName)
 
         subscription.on('message', async (message: Message) => {
-            await pullListenerService.handleEvents(message.attributes?.type, JSON.parse(message.data.toString()))
+            const eventHandler = getEventHandler(message.attributes)
+            await eventHandler?.(JSON.parse(message.data.toString()))
             message.ack()
         })
 
