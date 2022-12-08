@@ -1,6 +1,6 @@
 import { AuthenticatedRequest, checkError } from '@bike4life/commons';
 import { NextFunction, Request, Response } from 'express';
-import { RoutesService } from '../services/routes.service';
+import { RoutesService } from '../services/routes.service'
 
 class RoutesController {
 
@@ -13,15 +13,10 @@ class RoutesController {
   public removeRoute = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
       const id_route = req.params._id
-      const id_route_user = req.params.userId
-      const id_user = req.user._id
-      if( id_route_user = id_user){
-        this.routesService.removeRoute(id_route)
-        res.sendStatus(200)
-      }else {
-        res.sendStatus(403)    
-      }
+      this.routesService.removeRoute(id_route)
+      res.sendStatus(200)
     } catch (error) {
+      res.sendStatus(403)
       next(error);
     }
   }
@@ -53,16 +48,11 @@ class RoutesController {
       const newRoute = req.body
       const idRoute = req.params.id
 
-      const id_route_user = req.params.userId
-      const id_user = req.user._id
+      this.routesService.updateRoute(newRoute, idRoute)
+      res.sendStatus(200)
 
-      if( id_route_user = id_user){
-        this.routesService.updateRoute(newRoute, idRoute)
-        res.sendStatus(200)
-      }else {
-        res.sendStatus(403)    
-      }
     } catch (error) {
+      res.sendStatus(403)
       next(error)
     }
   }

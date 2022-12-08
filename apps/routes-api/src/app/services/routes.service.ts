@@ -1,10 +1,16 @@
+import { decryptString, encryptString, User } from '@bike4life/commons';
+import { UserModel } from 'apps/auth-api/src/app/models/user.model';   
 import { Route, RouteModel } from "../models/route.model"
 
 export class RoutesService {
 
     async removeRoute(id: string): Promise<Route> {
         const result = await RouteModel
+        const user = await UserModel
+        if( result.userId = user._id){
             .findByIdAndDelete(id)
+          }
+            
         return result
     }
 
@@ -21,7 +27,11 @@ export class RoutesService {
     }
 
     async updateRoute(putRoute: Route, id: string): Promise<Route> {
-        const result = await RouteModel.findByIdAndUpdate(id, putRoute)
+        const result = await RouteModel
+        const user = await UserModel
+        if( result.userId = user._id){
+            .findByIdAndUpdate(id, putRoute)
+          }
         return result
     }
 }
