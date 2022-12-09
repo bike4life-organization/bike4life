@@ -1,4 +1,6 @@
 import { UserCreatedEventMessage } from "@bike4life/commons";
+import { Message } from "@google-cloud/pubsub";
+import mongoose, { Collection } from "mongoose";
 import nunjucksService from "../services/nunjucks.service";
 import sendGridService from "../services/sendgrid.service";
 
@@ -15,4 +17,6 @@ export async function userCreatedHandler(payload: unknown) {
   const template = nunjucksService.obtainTemplate(emailTemplate, payload);
 
   await sendGridService.sendEmailWithTemplate(subject, payload.user_email, template);
+  
+  
 }
