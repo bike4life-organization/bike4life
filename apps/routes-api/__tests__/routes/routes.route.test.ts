@@ -37,13 +37,14 @@ describe('Routes route', () => {
   })
 
   test('POST /routes should return a 201', async () => {
+
     jest.spyOn(RouteModel, 'create').mockImplementationOnce(async () => {
       return mockRoute
     });
 
-    const response = await request(server).post('/routes').send(mockRoute)
+    const response = await request(server).post('/routes').send(mockRoute);
     expect(response.status).toBe(201)
-
+    expect(response.body.name).toBe(mockRoute.name)
   })
 
   test('GET /routes/:id should return a 200', async () => {
@@ -52,7 +53,7 @@ describe('Routes route', () => {
     const response = await request(server).get(`/routes/:id`)
     expect(response.status).toBe(200)
     expect(response.body).toMatchObject({
-      coordinares: mockRoute.coordinates,
+      coordinates: mockRoute.coordinates,
       name: mockRoute.name
     })
   })
@@ -61,12 +62,9 @@ describe('Routes route', () => {
     mockingoose(RouteModel).toReturn(mockRoute, 'findOne');
     mockingoose(RouteModel).toReturn(mockRoute, 'update');
 
-    const response = await request(server).put(`/routes/:id`).send({ UserId: 'user_id_1' })
+    const response = await request(server).put(`/routes/:id`).send({ name: 'updated route' })
     expect(response.status).toBe(200)
-    expect(response.body).toMatchObject({
-      coordinares: mockRoute.coordinates,
-      name: mockRoute.name
-    })
+    expect(response.body).toBe(mockRoute.name)
   })
 
   test('DELETE /routes/:id should return a 204', async () => {
@@ -74,5 +72,6 @@ describe('Routes route', () => {
 
     const response = await request(server).delete(`/routes/:id`)
     expect(response.status).toBe(204)
+    expect(response.body).toBeUndefined
   })
 })

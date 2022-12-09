@@ -33,7 +33,7 @@ const routeSchema = new Schema<Route>({
     },
     userId: {
         type: String,
-        required: false
+        required: true
     }
 })
 

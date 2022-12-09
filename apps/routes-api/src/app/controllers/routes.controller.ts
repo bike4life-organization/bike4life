@@ -14,7 +14,7 @@ class RoutesController {
     try {
       const id = req.params.id
       this.routesService.removeRoute(id)
-      res.sendStatus(200)
+      res.sendStatus(204)
     } catch (error) {
       next(error);
     }
@@ -34,7 +34,7 @@ class RoutesController {
     try {
       const newRoute = req.body
       this.routesService.createRoute(newRoute)
-      res.sendStatus(200)
+      res.sendStatus(201)
 
     } catch (error) {
       next(error)
@@ -45,8 +45,8 @@ class RoutesController {
     try {
       const newRoute = req.body
       const idRoute = req.params.id
-      this.routesService.updateRoute(newRoute, idRoute)
-      res.sendStatus(201)
+      await this.routesService.updateRoute(newRoute, idRoute)
+      res.sendStatus(200)
     } catch (error) {
       next(error)
     }

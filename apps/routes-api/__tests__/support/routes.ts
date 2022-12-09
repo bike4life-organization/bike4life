@@ -22,5 +22,6 @@ export const mockRoute = {
     name: 'testRoute',
     description: 'this is a test route',
     estimatedDuration: 123,
+    userId: 'user_id_0'
   }
   
