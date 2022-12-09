@@ -15,3 +15,9 @@ export interface RouteCreatedEventMessage {
   user_email: string;
 }
 
+export interface Mail {
+  messagetype: string;
+  userId: string;
+  routeId: string;
+  userMail: string;
+}

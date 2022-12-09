@@ -1,15 +1,20 @@
 import { logger } from "@bike4life/commons";
 import { MailService } from "@sendgrid/mail";
+import { EventType } from "../handlers";
 import { sendgridSettings as sd } from "../settings";
+import mailService from "./mail.service";
 
 class SendGridService {
   async sendEmailWithTemplate(
     subject: string,
-    user_email: string,
-    template: string
+    payload: any,
+    template: string,
+    type: EventType
   ) {
     const sgMail = new MailService();
     sgMail.setApiKey(sd.SENDGRID_API_KEY);
+
+    const { user_email, user_id, route_id } = payload;
 
     const msg = {
       to: user_email,
@@ -24,6 +29,13 @@ class SendGridService {
     } catch (error) {
       console.error(error);
       logger.error({ error: error });
+    } finally {
+      await mailService.create({
+        userId: user_id,
+        routeId: route_id,
+        userMail: user_email,
+        messagetype: type,
+      });
     }
   }
 }

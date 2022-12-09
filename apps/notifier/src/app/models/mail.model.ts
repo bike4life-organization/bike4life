@@ -1,25 +1,19 @@
+import { Mail } from "@bike4life/commons";
 import { Schema, model } from "mongoose";
 
-export interface MailModel {
-  messagetype: string;
-  userId: number;
-  routeId: number;
-  userMail: number;
-}
-
-const MailSchema = new Schema<MailModel>({
+const MailSchema = new Schema<Mail>({
   messagetype: {
     type: String,
   },
   userId: {
-    type: Number,
+    type: String,
   },
   routeId: {
-    type: Number,
+    type: String,
   },
   userMail: {
-    type: Number,
+    type: String,
   },
 });
 
-export const Mail = model<MailModel>("Mail", MailSchema);
+export const MailModel = model<Mail>("Mail", MailSchema);
