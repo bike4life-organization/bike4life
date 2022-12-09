@@ -1,4 +1,3 @@
-import { checkError } from '@bike4life/commons';
 import { NextFunction, Request, Response } from 'express';
 import { RoutesService } from '../services/routes.service';
 
@@ -35,7 +34,6 @@ class RoutesController {
       const newRoute = req.body
       this.routesService.createRoute(newRoute)
       res.sendStatus(201)
-
     } catch (error) {
       next(error)
     }
