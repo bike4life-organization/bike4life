@@ -1,6 +1,7 @@
 export * from './lib/commons'
 export * from './lib/logger'
 export * from './lib/pubsub/client'
+export * from './lib/pubsub/notifier-messages'
 export * from './lib/encryption'
 export * from './lib/errors'
 export * from './lib/http-exception'

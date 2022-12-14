@@ -16,7 +16,8 @@
         "main": "apps/notifier/src/main.ts",
         "tsConfig": "apps/notifier/tsconfig.app.json",
         "assets": [
-          "apps/notifier/src/assets"
+          "apps/notifier/src/assets",
+          "apps/notifier/src/app/views"
         ]
       },
       "configurations": {
