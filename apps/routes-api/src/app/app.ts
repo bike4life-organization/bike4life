@@ -7,7 +7,7 @@ import { connect, set } from 'mongoose'
 
 import { Routes } from '@bike4life/api-interfaces'
 import errorMiddleware from './middlewares/error.middleware'
-import { mongoConnectionSettings } from './settings'
+import { apiSettings, mongoConnectionSettings } from './settings'
 
 class App {
   app: Application
@@ -16,7 +16,7 @@ class App {
 
   constructor(routes: Routes[]) {
     this.app = express()
-    this.port = process.env.PORT || 3333
+    this.port = apiSettings.port || 3333
     this.env = process.env.NODE_ENV || 'development'
 
     this.connectToDatabase()
@@ -37,8 +37,13 @@ class App {
       set('debug', true)
     }
 
-    connect(mongoConnectionSettings.url, () => {
-      console.log('Connected to database!')
+    connect(mongoConnectionSettings.url, (err) => {
+      if (!err) {
+        console.log('Connected to database!')
+      } else {
+        console.log('Error connecting to database!')
+        console.error(err)
+      }
     })
   }
 

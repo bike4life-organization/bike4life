@@ -1,16 +1,15 @@
-import { decryptString, encryptString, User } from '@bike4life/commons';
-import { UserModel } from 'apps/auth-api/src/app/models/user.model';   
 import { Route, RouteModel } from "../models/route.model"
 
 export class RoutesService {
 
-    async removeRoute(id: string): Promise<Route> {
+    async removeRoute(id: string, loggedUserId: string): Promise<Route> {
+        const route = await this.getRouteById(id)
+        if (route.userId !== loggedUserId) {
+            throw new Error('You are not allowed to access this resource')
+        }
         const result = await RouteModel
-        const user = await UserModel
-        if( result.userId = user._id){
             .findByIdAndDelete(id)
-          }
-            
+
         return result
     }
 
@@ -26,12 +25,17 @@ export class RoutesService {
             .exec()
     }
 
-    async updateRoute(putRoute: Route, id: string): Promise<Route> {
+    async updateRoute(putRoute: Route, id: string, loggedUserId: string): Promise<Route> {
+        const route = await this.getRouteById(id)
+        if (route.userId !== loggedUserId) {
+            throw new Error('You are not allowed to access this resource')
+        }
         const result = await RouteModel
-        const user = await UserModel
-        if( result.userId = user._id){
             .findByIdAndUpdate(id, putRoute)
-          }
         return result
+    }
+
+    async listRoutes(userId: string): Promise<Route[]> {
+        return RouteModel.find({ userId }).exec()
     }
 }

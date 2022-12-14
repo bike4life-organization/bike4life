@@ -14,11 +14,10 @@ class RoutesRoute implements Routes {
   }
 
   private initializeRoutes() {
-    
-    this.router.post(`${this.path}`, this.routesController.createRoute)
-    this.router.get(`${this.path}/:id`, this.routesController.get)
-
     this.router.use(authMiddleware)
+    this.router.post(`${this.path}`, this.routesController.createRoute)
+    this.router.get(`${this.path}`, this.routesController.list)
+    this.router.get(`${this.path}/:id`, this.routesController.get)
     this.router.delete(`${this.path}/:id`, this.routesController.removeRoute)
     this.router.put(`${this.path}/:id`, this.routesController.updateRoute)
   }
