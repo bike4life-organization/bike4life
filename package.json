@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "generate-notifier-docs": "ag apps/notifier/src/swagger.yaml @asyncapi/html-template -o apps/notifier/src/assets/docs"
   },
   "private": true,
   "dependencies": {
@@ -24,6 +25,7 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
+    "@asyncapi/generator": "^1.9.14",
     "@nrwl/cli": "15.0.13",
     "@nrwl/eslint-plugin-nx": "15.0.13",
     "@nrwl/express": "^15.0.13",
