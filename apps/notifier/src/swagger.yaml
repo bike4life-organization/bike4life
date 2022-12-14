@@ -7,13 +7,11 @@ servers:
   development:
     url: localhost:8085
     description: Development server
-    protocol: amqp
-    protocolVersion: 0.9.1
+    protocol: http
   production:
     url: changeit
     description: Production server
-    protocol: amqp
-    protocolVersion: 0.9.1
+    protocol: http
 
 channels:
   notifier-user-created:
