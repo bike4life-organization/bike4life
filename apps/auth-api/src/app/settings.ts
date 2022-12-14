@@ -4,7 +4,8 @@ const {
   MONGO_DB_USER,
   MONGO_DB_PASSWORD,
   MONGO_DB_DATABASE,
-  JWT_SECRET
+  JWT_SECRET,
+  AUTH_API_PORT
 } = process.env
 
 
@@ -18,4 +19,8 @@ export const avatarSettings = {
 
 export const secretSettings = {
   jwt: JWT_SECRET
+}
+
+export const apiSettings = {
+  port: AUTH_API_PORT
 }

@@ -6,7 +6,7 @@ export interface Route {
     name: string
     description: string
     estimatedDuration: number
-    userId: string
+    userId: string,
     _id?: string
 }
 

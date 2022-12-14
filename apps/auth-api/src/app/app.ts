@@ -7,7 +7,7 @@ import mongoose, { connect, set } from 'mongoose'
 
 import { Routes } from '@bike4life/api-interfaces'
 import errorMiddleware from './middlewares/error.middleware'
-import { mongoConnectionSettings } from './settings'
+import { apiSettings, mongoConnectionSettings } from './settings'
 import { Server } from 'http'
 
 class App {
@@ -18,7 +18,7 @@ class App {
 
   constructor(routes: Routes[]) {
     this.app = express()
-    this.port = process.env.PORT || 3333
+    this.port = apiSettings.port || 3333
     this.env = process.env.NODE_ENV || 'development'
 
     this.connectToDatabase()
@@ -31,6 +31,11 @@ class App {
   async listen(): Promise<Server> {
     return new Promise((resolve, reject) => {
       this.server = this.app.listen(this.port)
+
+      console.log(`
+        ################################################
+        🛡️  Server listening on port: ${this.port} 🛡️
+      `)
 
       this.server.once('error', err => reject(err))
       this.server.once('listening', () => resolve(this.server as Server))
