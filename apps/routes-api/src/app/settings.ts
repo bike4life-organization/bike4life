@@ -4,7 +4,9 @@ const {
   MONGO_DB_USER,
   MONGO_DB_PASSWORD,
   MONGO_DB_DATABASE,
-  ROUTES_API_PORT
+  ROUTES_API_PORT,
+  NOTIFIER_PUBSUB_TOPIC_NAME,
+  PUBSUB_PROJECT_ID
 } = process.env
 
 
@@ -14,4 +16,9 @@ export const mongoConnectionSettings = {
 
 export const apiSettings = {
   port: ROUTES_API_PORT
+}
+
+export const pubsubSettings = {
+  projectId: PUBSUB_PROJECT_ID,
+  notifierTopic: NOTIFIER_PUBSUB_TOPIC_NAME
 }
