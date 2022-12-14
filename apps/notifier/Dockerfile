@@ -1,18 +1,37 @@
-# Common build stage
-FROM node:19.0.0-alpine as common-build-stage
+###################
+# BUILD FOR PRODUCTION
+###################
 
-COPY ./apps/notifier ./app
-COPY ./package.json ./app
+FROM node:19-alpine As build
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-RUN npm install
+COPY --chown=node:node package*.json ./
 
-EXPOSE 3000
+RUN npm ci
 
-# Production build stage
-FROM common-build-stage as production-build-stage
+COPY --chown=node:node . .
 
+# Run the build command which creates the production bundle
+RUN npm run build notifier
+
+###################
+# PRODUCTION
+###################
+
+FROM node:19-alpine As production
+
+COPY --chown=node:node package*.json ./
+
+# Set NODE_ENV environment variable
 ENV NODE_ENV production
 
-CMD ["npm", "run", "start", "notifier"]
+# Running `npm ci` removes the existing node_modules directory and passing in --only=production ensures that only the production dependencies are installed. This ensures that the node_modules directory is as optimized as possible
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy the bundled code from the build stage to the production image
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/dist/apps/notifier ./dist
+
+# Start the server using the production build
+CMD [ "node", "dist/main.js" ]

@@ -1,7 +1,7 @@
 import { Attributes, PublishError, PubSub, Subscription, Topic } from '@google-cloud/pubsub'
 import { Logger } from 'winston'
 
-interface Message {
+export interface Message {
   payload: unknown
   attributes: Attributes
 }
