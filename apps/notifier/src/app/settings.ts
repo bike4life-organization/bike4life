@@ -8,7 +8,8 @@ const {
   MONGO_DB_PORT,
   MONGO_DB_USER,
   MONGO_DB_PASSWORD,
-  NOTIFIER_DATABASE_NAME
+  NOTIFIER_DATABASE_NAME,
+  NOTIFIER_DOCS_PORT
 } = process.env;
 
 export const pubsubSettings = {
@@ -27,4 +28,8 @@ export const sendgridSettings = {
 
 export const mongoConnectionSettings = {
   url: `mongodb://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_HOST}:${MONGO_DB_PORT}/${NOTIFIER_DATABASE_NAME}?authSource=admin`,
+}
+
+export const publicDocSettings = {
+  port: NOTIFIER_DOCS_PORT
 }

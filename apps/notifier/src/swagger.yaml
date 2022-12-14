@@ -2,14 +2,14 @@ asyncapi: 2.0.0
 info:
   title: Notifier Async API
   description: Notification events to send message with Sendgrid API.
-  version: '1.0.0'
+  version: "1.0.0"
 servers:
   development:
     url: localhost:8085
     description: Development server
     protocol: http
   production:
-    url: changeit
+    url: pending
     description: Production server
     protocol: http
 
@@ -19,21 +19,21 @@ channels:
     publish:
       operationId: userCorrectlyCreated
       message:
-        $ref: '#/components/messages/userCorrectlyCreated'
+        $ref: "#/components/messages/userCorrectlyCreated"
 
   notifier-route-created:
     description: Route is correctly create on system
     publish:
       operationId: routeCorrectlyCreated
       message:
-        $ref: '#/components/messages/routeCorrectlyCreated'
+        $ref: "#/components/messages/routeCorrectlyCreated"
 
   notifier-route-optimized:
     description: Route will be optimized soon
     publish:
       operationId: routeOptimizedNotification
       message:
-        $ref: '#/components/messages/routeOptimizedNotification'
+        $ref: "#/components/messages/routeOptimizedNotification"
 
 components:
   messages:
@@ -50,46 +50,46 @@ components:
         $ref: "#/components/schemas/routeCorrectlyCreatedPayload"
 
     routeOptimizedNotification:
-        name: routeOptimizedNotification
-        title: Route will be optimized soon
-        payload:
-          $ref: "#/components/schemas/routeOptimizedNotificationPayload"
+      name: routeOptimizedNotification
+      title: Route will be optimized soon
+      payload:
+        $ref: "#/components/schemas/routeOptimizedNotificationPayload"
 
   schemas:
     userCorrectlyCreatedPayload:
       type: object
       properties:
-        data: 
+        data:
           type: object
           $ref: "#/components/schemas/data-user-created"
         attributes:
           type: object
-          $ref: "#/components/schemas/message-atributes"
-    
+          $ref: "#/components/schemas/message-attributes"
+
     routeCorrectlyCreatedPayload:
       type: object
       properties:
-        data: 
+        data:
           type: object
           $ref: "#/components/schemas/data-route-created"
         attributes:
           type: object
-          $ref: "#/components/schemas/message-atributes"
+          $ref: "#/components/schemas/message-attributes"
 
     routeOptimizedNotificationPayload:
       type: object
       properties:
-        data: 
+        data:
           type: object
           $ref: "#/components/schemas/data-route-optimization"
         attributes:
           type: object
-          $ref: "#/components/schemas/message-atributes"
-    
+          $ref: "#/components/schemas/message-attributes"
+
     data-user-created:
       type: object
       properties:
-        user_id: 
+        user_id:
           type: string
         user_email:
           type: string
@@ -97,7 +97,7 @@ components:
     data-route-created:
       type: object
       properties:
-        user_id: 
+        user_id:
           type: string
         user_email:
           type: string
@@ -107,14 +107,19 @@ components:
     data-route-optimization:
       type: object
       properties:
-        user_id: 
+        user_id:
           type: string
         user_email:
           type: string
 
-    message-atributes:
+    message-attributes:
       type: object
       properties:
         type:
           type: string
-          enum: [UserCorrectlyCreated, RouteCorrectlyCreated, RouteOptimizedNotification]
+          enum:
+            [
+              UserCorrectlyCreated,
+              RouteCorrectlyCreated,
+              RouteOptimizedNotification,
+            ]

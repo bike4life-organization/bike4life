@@ -1,25 +1,34 @@
 import mongoose, { set, connect } from "mongoose";
 import startPullListener from "./listener/pull-listener";
 import * as express from "express";
-import * as swaggerJSDoc from "swagger-jsdoc";
-import * as swaggerUi from "swagger-ui-express";
 import * as path from "path";
-import { mongoConnectionSettings } from "./settings";
+import { mongoConnectionSettings, publicDocSettings } from "./settings";
 import { Application } from "express";
+import { Server } from 'http'
+import * as fs from 'fs'
 
 class App {
   app: Application;
+  server: Server;
   env: string;
+  port: string | number;
 
   constructor() {
     this.app = express();
+    this.port = publicDocSettings.port || 3333
     this.env = process.env.NODE_ENV || "development";
     this.initializeSwagger();
+    this.connectToDatabase();
+    startPullListener();
   }
 
-  listen(): Promise<void> {
-    this.connectToDatabase();
-    return startPullListener();
+  async listen(): Promise<Server> {
+    return new Promise((resolve, reject) => {
+      this.server = this.app.listen(this.port)
+
+      this.server.once('error', err => reject(err))
+      this.server.once('listening', () => resolve(this.server as Server))
+    })
   }
 
   connectToDatabase(): void {
@@ -41,20 +50,7 @@ class App {
   }
 
   private initializeSwagger(): void {
-    const options = {
-      failOnErrors: true,
-      definition: {
-        openapi: "3.0.0",
-        info: {
-          title: "Hello World",
-          version: "1.0.0",
-        },
-      },
-      apis: [path.join(__dirname, "swagger.yaml")],
-    };
-
-    const specs = swaggerJSDoc(options);
-    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+    this.app.use("/api-docs", express.static(path.join(__dirname, 'assets/docs')))
   }
 }
 
