@@ -1,39 +1,122 @@
-openapi: 3.0.0
+asyncapi: 2.0.0
 info:
-  title: Notifier API
-  description: This API is in charge of sending notifications using SendGrid API.
-  version: 1.0.0
+  title: Notifier Async API
+  description: Notification events to send message with Sendgrid API.
+  version: '1.0.0'
 servers:
-  - url: http://localhost:8085/v1/
+  development:
+    url: localhost:8085
+    description: Development server
+    protocol: amqp
+    protocolVersion: 0.9.1
+  production:
+    url: changeit
+    description: Production server
+    protocol: amqp
+    protocolVersion: 0.9.1
 
-paths:
-  /dev-pubsub-project/topics/notifier-topic:publish:
-    post:
-     requestBody:
-        description: 
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/messages"
-      responses:
-        "200":
-          description: Return a 200 status to indicate that the data was received successfully
+channels:
+  notifier-user-created:
+    description: User is correctly created on system
+    publish:
+      operationId: userCorrectlyCreated
+      message:
+        $ref: '#/components/messages/userCorrectlyCreated'
 
+  notifier-route-created:
+    description: Route is correctly create on system
+    publish:
+      operationId: routeCorrectlyCreated
+      message:
+        $ref: '#/components/messages/routeCorrectlyCreated'
+
+  notifier-route-optimized:
+    description: Route will be optimized soon
+    publish:
+      operationId: routeOptimizedNotification
+      message:
+        $ref: '#/components/messages/routeOptimizedNotification'
 
 components:
-  schemas:
-    messages:
-      required:
-        - data
-        - attributes
-      properties:
-        data:
-          type: string
-        attributes:
-          type: 
-            $ref: "#/components/schemas/topic"
-    topic:
-      type: object
-      properties: 
-        type: string
+  messages:
+    userCorrectlyCreated:
+      name: userCorrectlyCreated
+      title: User create correctly in the system
+      payload:
+        $ref: "#/components/schemas/userCorrectlyCreatedPayload"
 
+    routeCorrectlyCreated:
+      name: routeCorrectlyCreated
+      title: Route create correctly in the system
+      payload:
+        $ref: "#/components/schemas/routeCorrectlyCreatedPayload"
+
+    routeOptimizedNotification:
+        name: routeOptimizedNotification
+        title: Route will be optimized soon
+        payload:
+          $ref: "#/components/schemas/routeOptimizedNotificationPayload"
+
+  schemas:
+    userCorrectlyCreatedPayload:
+      type: object
+      properties:
+        data: 
+          type: object
+          $ref: "#/components/schemas/data-user-created"
+        attributes:
+          type: object
+          $ref: "#/components/schemas/message-atributes"
+    
+    routeCorrectlyCreatedPayload:
+      type: object
+      properties:
+        data: 
+          type: object
+          $ref: "#/components/schemas/data-route-created"
+        attributes:
+          type: object
+          $ref: "#/components/schemas/message-atributes"
+
+    routeOptimizedNotificationPayload:
+      type: object
+      properties:
+        data: 
+          type: object
+          $ref: "#/components/schemas/data-route-optimization"
+        attributes:
+          type: object
+          $ref: "#/components/schemas/message-atributes"
+    
+    data-user-created:
+      type: object
+      properties:
+        user_id: 
+          type: string
+        user_email:
+          type: string
+
+    data-route-created:
+      type: object
+      properties:
+        user_id: 
+          type: string
+        user_email:
+          type: string
+        route_id:
+          type: string
+
+    data-route-optimization:
+      type: object
+      properties:
+        user_id: 
+          type: string
+        user_email:
+          type: string
+
+    message-atributes:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [UserCorrectlyCreated, RouteCorrectlyCreated, RouteOptimizedNotification]
