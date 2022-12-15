@@ -24,7 +24,6 @@ services:
       - "8081:8081"
     restart: "unless-stopped"
     links:
-      - mongo
       - pubsub-emulator
     depends_on:
       - pubsub-emulator
