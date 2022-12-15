@@ -1,16 +1,28 @@
 import { Route, RouteModel } from "../models/route.model"
+import { NotifierService } from "./notifier.service"
 
 export class RoutesService {
+    private notifierService: NotifierService
 
-    async removeRoute(id: string): Promise<Route> {
+    constructor() {
+        this.notifierService = new NotifierService()
+    }
+
+    async removeRoute(id: string, loggedUserId: string): Promise<Route> {
+        const route = await this.getRouteById(id)
+        if (route.userId !== loggedUserId) {
+            throw new Error('You are not allowed to access this resource')
+        }        
         const result = await RouteModel
             .findByIdAndDelete(id)
+
         return result
     }
 
     async createRoute(newRoute: Route): Promise<Route> {
         const result = await RouteModel
             .create(newRoute)
+        await this.notifierService.sendRouteCreatedNotification(result)
         return result
     }
 
@@ -20,8 +32,17 @@ export class RoutesService {
             .exec()
     }
 
-    async updateRoute(putRoute: Route, id: string): Promise<Route> {
-        const result = await RouteModel.findByIdAndUpdate(id, putRoute)
+    async updateRoute(putRoute: Route, id: string, loggedUserId: string): Promise<Route> {
+        const route = await this.getRouteById(id)
+        if (route.userId !== loggedUserId) {
+            throw new Error('You are not allowed to access this resource')
+        }
+        const result = await RouteModel
+            .findByIdAndUpdate(id, putRoute)
         return result
+    }
+
+    async listRoutes(userId: string): Promise<Route[]> {
+        return RouteModel.find({ userId }).exec()
     }
 }

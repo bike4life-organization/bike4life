@@ -1,10 +1,6 @@
 import { config } from 'dotenv'
+import App from './app/app'
 config({ path: '../../.env' })
 
-import startPullListener from './pull-listener'
-
-const start = (): Promise<void> => {
-  return startPullListener()
-}
-
-start()
+const app = new App();
+app.listen();
