@@ -48,7 +48,7 @@
     "eslint-plugin-jsx-a11y": "6.6.1",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
-    "mockingoose": "^2.15.2",
+    "mockingoose": "2.15.2",
     "nx": "15.0.13",
     "prettier": "^2.6.2",
     "supertest": "^6.3.1",
