@@ -1,18 +1,32 @@
 version: "3.7"
 
 services:
+  pubsub-emulator:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:367.0.0-emulators
+    command:
+      [
+        "gcloud",
+        "beta",
+        "emulators",
+        "pubsub",
+        "start",
+        "--host-port=0.0.0.0:8085",
+        "--project=bike4life-project",
+      ]
+    ports:
+      - "8085:8085"
+
   auth-api:
     build:
       context: .
       dockerfile: ./apps/auth-api/Dockerfile
     ports:
-      - "3001:3333"
+      - "8081:8081"
     restart: "unless-stopped"
     links:
       - mongo
       - pubsub-emulator
     depends_on:
-      - mongo
       - pubsub-emulator
     env_file: .env.production
 
@@ -21,13 +35,11 @@ services:
       context: .
       dockerfile: ./apps/routes-api/Dockerfile
     ports:
-      - "3002:3333"
+      - "8080:8080"
     restart: "unless-stopped"
     links:
-      - mongo
       - pubsub-emulator
     depends_on:
-      - mongo
       - pubsub-emulator
     env_file: .env.production
 
@@ -36,13 +48,11 @@ services:
       context: .
       dockerfile: ./apps/notifier/Dockerfile
     ports:
-      - "3003:3333"
+      - "8082:8082"
     restart: "unless-stopped"
     links:
-      - mongo
       - pubsub-emulator
     depends_on:
-      - mongo
       - pubsub-emulator
     env_file: .env.production
 
@@ -54,9 +64,7 @@ services:
       - "3004:3333"
     restart: "unless-stopped"
     links:
-      - mongo
       - pubsub-emulator
     depends_on:
-      - mongo
       - pubsub-emulator
     env_file: .env.production
