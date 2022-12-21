@@ -1,0 +1,3 @@
+[submodule "bike4life-frontend"]
+	path = bike4life-frontend
+	url = git@github.com:bike4life-organization/bike4life-frontend.git
