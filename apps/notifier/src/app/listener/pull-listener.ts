@@ -1,6 +1,6 @@
-import { logger, PubSubClient } from '@bike4life/commons'
+import { logger, NotifierMessageTypes, PubSubClient } from '@bike4life/commons'
 import { Message } from '@google-cloud/pubsub'
-import { EventType, getMessageHandler } from '../handlers';
+import { getMessageHandler } from '../handlers';
 import { pubsubSettings as pbs } from '../settings';
 
 export default async function startPullListener(): Promise<void> {
@@ -14,7 +14,7 @@ export default async function startPullListener(): Promise<void> {
         if (!message.attributes.type) {
           throw new Error('Message type is not defined')
         }
-        const handler = getMessageHandler(message.attributes.type as EventType)
+        const handler = getMessageHandler(message.attributes.type as NotifierMessageTypes)
         await handler(JSON.parse(message.data.toString()))
 
         message.ack()

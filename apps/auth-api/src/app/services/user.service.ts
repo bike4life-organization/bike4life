@@ -24,13 +24,13 @@ export class UserService {
     return userWithoutPassword
   }
 
-  async create(newUser: User): Promise<void> {
+  async create(newUser: User): Promise<User> {
     const user: User = {
       ...newUser,
       password: encryptString(newUser.password),
     }
 
-    await UserModel.create(user)
+    return UserModel.create(user)
   }
 
   async login(email: string, password: string): Promise<string> {

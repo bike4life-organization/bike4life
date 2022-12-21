@@ -5,7 +5,9 @@ const {
   MONGO_DB_PASSWORD,
   AUTH_API_PORT,
   AUTH_API_DATABASE_NAME,
-  JWT_SECRET
+  JWT_SECRET,
+  PUBSUB_PROJECT_ID,
+  NOTIFIER_PUBSUB_TOPIC_NAME
 } = process.env
 
 
@@ -23,4 +25,9 @@ export const secretSettings = {
 
 export const apiSettings = {
   port: AUTH_API_PORT
+}
+
+export const pubsubSettings = {
+  projectId: PUBSUB_PROJECT_ID,
+  notifierTopic: NOTIFIER_PUBSUB_TOPIC_NAME
 }
