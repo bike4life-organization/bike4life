@@ -1,4 +1,5 @@
 const {
+  AUTH_API_DATABASE_URL,
   MONGO_DB_HOST,
   MONGO_DB_PORT,
   MONGO_DB_USER,
@@ -12,7 +13,7 @@ const {
 
 
 export const mongoConnectionSettings = {
-  url: `mongodb://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_HOST}:${MONGO_DB_PORT}/${AUTH_API_DATABASE_NAME}?authSource=admin`,
+  url: AUTH_API_DATABASE_URL ? AUTH_API_DATABASE_URL : `mongodb://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_HOST}:${MONGO_DB_PORT}/${AUTH_API_DATABASE_NAME}?authSource=admin`,
 }
 
 export const avatarSettings = {
