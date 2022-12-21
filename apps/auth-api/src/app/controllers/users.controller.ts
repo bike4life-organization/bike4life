@@ -1,12 +1,15 @@
 import { AuthenticatedRequest, checkError } from '@bike4life/commons';
 import { NextFunction, Request, Response } from 'express';
+import { NotifierService } from '../services/notifier.service';
 import { UserService } from '../services/user.service';
 
 class UsersController {
   private usersService: UserService
+  private notifierService: NotifierService
 
   constructor() {
     this.usersService = new UserService();
+    this.notifierService = new NotifierService();
   }
 
   public get = async (req: Request, res: Response, next: NextFunction) => {
@@ -26,7 +29,8 @@ class UsersController {
       if (!user.password) {
         throw new Error('User validation failed: password is required')
       }
-      await this.usersService.create(user)
+      const newUser = await this.usersService.create(user)
+      await this.notifierService.sendUserCreatedEvent(newUser)
       res.sendStatus(201)
     } catch (error) {
       console.log(error)

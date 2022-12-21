@@ -2,7 +2,6 @@ import {
   NotifierMessageTypes,
   RouteOptimizedEventMessage,
 } from "@bike4life/commons";
-import { EventType } from ".";
 import nunjucksService from "../services/nunjucks.service";
 import sendGridService from "../services/sendgrid.service";
 
