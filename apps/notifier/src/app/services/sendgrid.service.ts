@@ -1,4 +1,4 @@
-import { logger } from "@bike4life/commons";
+import { NotifierMessageTypes, logger } from "@bike4life/commons";
 import { MailService } from "@sendgrid/mail";
 import { EventType } from "../handlers";
 import { sendgridSettings as sd } from "../settings";
@@ -9,7 +9,7 @@ class SendGridService {
     subject: string,
     payload: any,
     template: string,
-    type: EventType
+    type: NotifierMessageTypes
   ) {
     const sgMail = new MailService();
     sgMail.setApiKey(sd.SENDGRID_API_KEY);

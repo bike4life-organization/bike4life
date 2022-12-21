@@ -1,4 +1,7 @@
-import { RouteCreatedEventMessage } from "@bike4life/commons";
+import {
+  NotifierMessageTypes,
+  RouteCreatedEventMessage,
+} from "@bike4life/commons";
 import { EventType } from ".";
 import nunjucksService from "../services/nunjucks.service";
 import sendGridService from "../services/sendgrid.service";
@@ -27,6 +30,6 @@ export async function routeCreatedHandler(payload: unknown) {
     subject,
     payload,
     template,
-    EventType.ROUTE_CREATED
+    NotifierMessageTypes.ROUTE_CREATED
   );
 }

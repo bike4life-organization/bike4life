@@ -1,4 +1,8 @@
-import { logger, UserCreatedEventMessage } from "@bike4life/commons";
+import {
+  logger,
+  NotifierMessageTypes,
+  UserCreatedEventMessage,
+} from "@bike4life/commons";
 import { EventType } from ".";
 import nunjucksService from "../services/nunjucks.service";
 import sendGridService from "../services/sendgrid.service";
@@ -26,6 +30,6 @@ export async function userCreatedHandler(payload: unknown) {
     subject,
     payload,
     template,
-    EventType.USER_CREATED
+    NotifierMessageTypes.USER_CREATED
   );
 }
