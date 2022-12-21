@@ -3,6 +3,7 @@ import * as express from 'express'
 import * as swaggerJSDoc from 'swagger-jsdoc'
 import * as swaggerUi from 'swagger-ui-express'
 import * as path from 'path'
+import * as cors from 'cors'
 import mongoose, { connect, set } from 'mongoose'
 
 import { Routes } from '@bike4life/api-interfaces'
@@ -72,6 +73,9 @@ class App {
   }
 
   private initializeMiddlewares(): void {
+    this.app.use(cors({
+      origin: '*'
+    }))
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
   }
