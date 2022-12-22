@@ -7,6 +7,7 @@ const {
   ROUTES_API_PORT,
   ROUTES_API_DATABASE_NAME,
   NOTIFIER_PUBSUB_TOPIC_NAME,
+  ROUTE_CHECKER_PUBSUB_TOPIC_NAME,
   PUBSUB_PROJECT_ID
 } = process.env
 
@@ -21,5 +22,6 @@ export const apiSettings = {
 
 export const pubsubSettings = {
   projectId: PUBSUB_PROJECT_ID,
-  notifierTopic: NOTIFIER_PUBSUB_TOPIC_NAME
+  notifierTopic: NOTIFIER_PUBSUB_TOPIC_NAME,
+  routeCheckerTopic: ROUTE_CHECKER_PUBSUB_TOPIC_NAME
 }
