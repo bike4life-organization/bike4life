@@ -1,12 +1,4 @@
-export type Coordinates = {
-    lon: number;
-    lat: number;
-}
-
-export interface EventData {
-    _id: string;
-    coordinates: Coordinates[];
-}
+import { Coordinates } from "@bike4life/commons"
 
 export interface InterestingPlaces {
     "xid": string,
@@ -18,11 +10,5 @@ export interface InterestingPlaces {
     "point": Coordinates
     "rate"?: number
     "routeId"?: string
-}
-
-export enum EventType {
-    CREATED = 'routeCreated',
-    UPDATED = 'routeUpdated',
-    DELETED = 'routeDeleted'
 }
 
