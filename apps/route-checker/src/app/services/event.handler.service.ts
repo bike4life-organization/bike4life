@@ -1,11 +1,12 @@
-import {EventData, EventType} from "../types/types";
+import { EventData } from "../types/types";
 import mapService from "./map.service";
 import interestingPlacesService from "./interesting.places.service";
+import { RouteCheckerEventType } from "@bike4life/commons";
 
 const eventsHandlers = {
-    [EventType.CREATED]: routeCreatedHandler,
-    [EventType.UPDATED]: routeUpdatedHandler,
-    [EventType.DELETED]: routeDeletedHandler,
+    [RouteCheckerEventType.CREATED]: routeCreatedHandler,
+    [RouteCheckerEventType.UPDATED]: routeUpdatedHandler,
+    [RouteCheckerEventType.DELETED]: routeDeletedHandler,
 }
 
 function routeCreatedHandler(event: EventData) {
@@ -39,6 +40,6 @@ function isOK(response: any) {
 }
 
 export function getEventHandler(attributes: any): (payload: string) => Promise<void> {
-    const {type} = attributes
+    const { type } = attributes
     return eventsHandlers[type]
 }

@@ -1,7 +1,7 @@
-import {logger, PubSubClient} from '@bike4life/commons'
-import {Message} from '@google-cloud/pubsub'
-import {pubSubSettings} from "../../../settings";
-import {getEventHandler} from "../services/event.handler.service";
+import { logger, PubSubClient } from '@bike4life/commons'
+import { Message } from '@google-cloud/pubsub'
+import { pubSubSettings } from "../../../settings";
+import { getEventHandler } from "../services/event.handler.service";
 
 export default async function startPullListener(): Promise<void> {
     try {
@@ -21,7 +21,7 @@ export default async function startPullListener(): Promise<void> {
 
     } catch (err) {
         console.log(err)
-        logger.error({error: err})
+        logger.error({ error: err })
         process.exit(1)
     }
 
