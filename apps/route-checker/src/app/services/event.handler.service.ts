@@ -1,7 +1,6 @@
-import { EventData } from "../types/types";
 import mapService from "./map.service";
 import interestingPlacesService from "./interesting.places.service";
-import { RouteCheckerEventType } from "@bike4life/commons";
+import {RouteCheckerEventData, RouteCheckerEventType} from "@bike4life/commons";
 
 const eventsHandlers = {
     [RouteCheckerEventType.CREATED]: routeCreatedHandler,
@@ -9,7 +8,7 @@ const eventsHandlers = {
     [RouteCheckerEventType.DELETED]: routeDeletedHandler,
 }
 
-function routeCreatedHandler(event: EventData) {
+function routeCreatedHandler(event: RouteCheckerEventData) {
     mapService.findPlacesByBBox(event.coordinates).then(response => {
         if (!isOK(response) || !event?._id?.length)
             return;
@@ -17,7 +16,7 @@ function routeCreatedHandler(event: EventData) {
     });
 }
 
-function routeUpdatedHandler(event: EventData) {
+function routeUpdatedHandler(event: RouteCheckerEventData) {
     mapService.findPlacesByBBox(event.coordinates).then(response => {
         if (!isOK(response) || !event?._id?.length)
             return;
@@ -26,11 +25,11 @@ function routeUpdatedHandler(event: EventData) {
     });
 }
 
-async function routeDeletedHandler(event: EventData) {
+async function routeDeletedHandler(event: RouteCheckerEventData) {
     await interestingPlacesService.removeInterestingPlaces(event._id);
 }
 
-function createInterestingPlaces(response: any, event: EventData) {
+function createInterestingPlaces(response: any, event: RouteCheckerEventData) {
     response.data.forEach(value => value.routeId = event._id);
     interestingPlacesService.createInterestingPlaces(response.data);
 }
@@ -40,6 +39,6 @@ function isOK(response: any) {
 }
 
 export function getEventHandler(attributes: any): (payload: string) => Promise<void> {
-    const { type } = attributes
+    const {type} = attributes
     return eventsHandlers[type]
 }

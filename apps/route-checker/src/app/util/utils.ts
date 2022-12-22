@@ -1,4 +1,5 @@
-import {Coordinates} from "../types/types";
+import {Coordinates} from "@bike4life/commons";
+
 
 export const findMin =
     (field: string, coordinates: Coordinates[]) => Math.min(...coordinates.map(item => item[field]));
