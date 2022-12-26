@@ -16,6 +16,14 @@ services:
     ports:
       - "8085:8085"
 
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/Dockerfile
+    ports:
+      - "80:80"
+    restart: "unless-stopped"
+
   auth-api:
     build:
       context: .
