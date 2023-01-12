@@ -1,4 +1,4 @@
-import { Route } from "../../app/models/route.model";
+import { Route } from "../../src/app/models/route.model";
 
 export const mockRoute: Route = {
   coordinates: [
@@ -8,7 +8,7 @@ export const mockRoute: Route = {
   date: new Date(),
   description: "description",
   name: "name",
-  userId: "userId",
-  _id: "id",
+  userId: "637a84fe0aea056e2ff60b7a",
+  _id: '637a84fe0aea056e2ff60b72',
   estimatedDuration: 1,
 }

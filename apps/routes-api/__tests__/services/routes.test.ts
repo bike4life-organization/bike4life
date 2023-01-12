@@ -1,8 +1,10 @@
-import { RouteModel } from '../../../src/app/models/route.model';
-import { RoutesService } from '../../../src/app/services/routes.service'
+import { RouteModel } from '../../src/app/models/route.model';
+import { RoutesService } from '../../src/app/services/routes.service'
 import * as mockingoose from 'mockingoose'
 import { mockRoute } from '../support/routes'
-import { Route } from "../../app/models/route.model";
+
+jest.mock('../../src/app/services/notifier.service')
+jest.mock('../../src/app/services/route-checker.service')
 
 describe('Route service', () => {
   const service = new RoutesService();
@@ -26,9 +28,10 @@ describe('Route service', () => {
     expect(result).toHaveProperty('name', mockRoute.name)
   })
 
-  xit('createRoute should create a new route', async () => {
-    mockingoose(RouteModel).toReturn(mockRoute, 'create');
-
+  it('createRoute should create a new route', async () => {
+    jest.spyOn(RouteModel, 'create').mockImplementationOnce(async () => {
+      return mockRoute
+    });
     const result = await service.createRoute(mockRoute)
     expect(result.name).toBe(mockRoute.name)
   })

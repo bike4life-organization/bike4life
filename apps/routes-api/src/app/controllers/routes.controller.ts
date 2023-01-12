@@ -14,7 +14,7 @@ class RoutesController {
       const routeId = req.params.id
       const loggedUserId = req.user._id
       await this.routesService.removeRoute(routeId, loggedUserId)
-      res.sendStatus(200)
+      res.sendStatus(204)
     } catch (error) {
       const validatedError = checkError(error)
       next(validatedError);
@@ -54,7 +54,7 @@ class RoutesController {
       const newRoute = req.body
       newRoute.userId = req.user._id
       await this.routesService.createRoute(newRoute)
-      res.sendStatus(200)
+      res.sendStatus(201)
     } catch (error) {
       const validatedError = checkError(error)
       next(validatedError)

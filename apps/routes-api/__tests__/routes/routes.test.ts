@@ -1,14 +1,14 @@
 import * as request from 'supertest'
 import * as mockingoose from 'mockingoose'
-import App from '../../../src/app/app'
+import App from '../../src/app/app'
 import { Server } from 'http'
 import { mockRoute } from '../support/routes'
-import { mockUser } from '../../../../auth-api/__tests__/support/users'
+import { mockUser } from '../support/users'
 
-import { RouteModel } from '../../../src/app/models/route.model'
-import RoutesRoute from '../../../src/app/routes/routes.route'
+import { RouteModel } from '../../src/app/models/route.model'
+import RoutesRoute from '../../src/app/routes/routes.route'
 
-/* jest.mock("@bike4life/commons", () => ({
+jest.mock("@bike4life/commons", () => ({
     authMiddleware: (req, res, next) => {
         req.user = mockUser
         next()
@@ -18,13 +18,13 @@ import RoutesRoute from '../../../src/app/routes/routes.route'
     },
     encryptString: (password) => {
         return password
-    }
+    },
 }));
 
 jest.mock('../../src/app/services/notifier.service')
-jest.mock('../../src/app/services/route-checker.service') */
+jest.mock('../../src/app/services/route-checker.service')
 
-xdescribe('Routes route', () => {
+describe('Routes route', () => {
     const app = new App([new RoutesRoute()])
     let server: Server
 
@@ -42,11 +42,12 @@ xdescribe('Routes route', () => {
     })
 
     test('POST /routes should return a 201', async () => {
-        mockingoose(RouteModel).toReturn(mockRoute, 'create');
+        jest.spyOn(RouteModel, 'create').mockImplementationOnce(async () => {
+            return mockRoute
+        });
 
         const response = await request(server).post('/routes').send(mockRoute)
         expect(response.status).toBe(201)
-        expect(response.name).toBe(mockRoute.name)
     })
 
     test('GET /routes should return a 200', async () => {
@@ -54,11 +55,11 @@ xdescribe('Routes route', () => {
 
         const response = await request(server).get('/routes').send(mockRoute.userId)
         expect(response.status).toBe(200)
-        expect(response).toHaveProperty('name', mockRoute.name)
+        expect(response.body).toHaveProperty('name', mockRoute.name)
     })
 
     test('GET /routes/:id should return a 200', async () => {
-        mockingoose(RouteModel).toReturn(mockRoute, 'findOne');
+        mockingoose(RouteModel).toReturn({ ...mockRoute, userId: mockUser._id }, 'findOne');
 
         const response = await request(server).get(`/routes/:id`).send(mockRoute._id)
         expect(response.status).toBe(200)
@@ -69,21 +70,19 @@ xdescribe('Routes route', () => {
     })
 
     test('UPDATE /routes/:id should return a 200', async () => {
-        mockingoose(RouteModel).toReturn(mockRoute, 'findOne');
-        mockingoose(RouteModel).toReturn(mockRoute, 'findOneAndUpdate');
+        mockingoose(RouteModel).toReturn({ ...mockRoute, userId: mockUser._id }, 'findOne');
+        mockingoose(RouteModel).toReturn({ ...mockRoute, userId: mockUser._id }, 'findOneAndUpdate');
 
-        const response = await request(server).put(`/routes`).send(mockRoute, mockRoute.userId, mockRoute.userId)
+        const response = await request(server).put(`/routes/${mockRoute._id}`).send(mockRoute, mockRoute.userId, mockRoute.userId)
 
         expect(response.status).toBe(200)
-        expect(response.name).toMatch(mockRoute.name)
     })
 
     test('DELETE /routes/:is should return a 204', async () => {
-        mockingoose(RouteModel).toReturn(mockRoute, 'findOne');
-        mockingoose(RouteModel).toReturn(mockRoute, 'delete');
+        mockingoose(RouteModel).toReturn({ ...mockRoute, userId: mockUser._id }, 'findOne');
+        mockingoose(RouteModel).toReturn(mockRoute, 'deleteOne');
 
-        const response = await request(server).delete(`/routes`).send(mockRoute._id)
+        const response = await request(server).delete(`/routes/${mockRoute._id}`).send(mockRoute._id)
         expect(response.status).toBe(204)
-        expect(response).toBeNull
     })
 })
