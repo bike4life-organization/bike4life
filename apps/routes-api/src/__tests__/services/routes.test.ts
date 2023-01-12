@@ -2,6 +2,7 @@ import { RouteModel } from '../../../src/app/models/route.model';
 import { RoutesService } from '../../../src/app/services/routes.service'
 import * as mockingoose from 'mockingoose'
 import { mockRoute } from '../support/routes'
+import { Route } from "../../app/models/route.model";
 
 describe('Route service', () => {
   const service = new RoutesService();
@@ -21,8 +22,8 @@ describe('Route service', () => {
   it('ListRoutes should return a list of routes', async () => {
     mockingoose(RouteModel).toReturn(mockRoute, 'find');
 
-    const result = await service.listRoutes(mockRoute._id)
-    expect(result).toBeDefined
+    const result = await service.listRoutes(mockRoute.userId)
+    expect(result).toHaveProperty('name', mockRoute.name)
   })
 
   xit('createRoute should create a new route', async () => {
@@ -32,15 +33,16 @@ describe('Route service', () => {
     expect(result.name).toBe(mockRoute.name)
   })
 
-  xit('updateRoute should update an existing route', async () => {
+  it('updateRoute should update an existing route', async () => {
     mockingoose(RouteModel).toReturn(mockRoute, 'findOne')
-    mockingoose(RouteModel).toReturn(mockRoute, 'update')
+    mockingoose(RouteModel).toReturn(mockRoute, 'findOneAndUpdate')
 
-    const result = await service.updateRoute(mockRoute, mockRoute._id, mockRoute._id)
-    expect(result.name).toBe(mockRoute.name)
+    const result = await service.updateRoute(mockRoute, mockRoute.userId, mockRoute.userId)
+    expect(result.name).toMatch(mockRoute.name)
   })
 
-  xit('removeRoute should delete a route', async () => {
+  it('removeRoute should delete a route', async () => {
+    mockingoose(RouteModel).toReturn(mockRoute, 'findOne')
     mockingoose(RouteModel).toReturn(mockRoute, 'delete')
 
     const result = await service.removeRoute(mockRoute._id, mockRoute.userId)
