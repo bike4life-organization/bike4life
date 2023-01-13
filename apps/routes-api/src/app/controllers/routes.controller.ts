@@ -24,6 +24,9 @@ class RoutesController {
   public list = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
       const routes = await this.routesService.listRoutes(req.user._id)
+      if (!routes) {
+        return res.status(404).send({ message: 'Routes not found' })
+      }
       res.send(routes)
     } catch (error) {
       const validatedError = checkError(error)
@@ -69,7 +72,7 @@ class RoutesController {
       if (newRoute._id) {
         return res.status(403).send({ error: 'The route id is immutable, you can not change it' });
       }
-      if (!Date.parse(newRoute.date)) {
+      if (newRoute.date && !Date.parse(newRoute.date)) {
         return res.status(400).send({ error: 'Invalid date format' });
       }
       await this.routesService.updateRoute(newRoute, idRoute, loggedUserId)
