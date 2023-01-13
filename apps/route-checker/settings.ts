@@ -8,7 +8,8 @@ const {
     ROUTE_CHECKER_PUBSUB_SUBSCRIPTION_NAME,
     ROUTE_CHECKER_PUBSUB_TOPIC_NAME,
     OPEN_TRIP_MAP_URL,
-    ROUTE_CHECKER_API_KEY
+    ROUTE_CHECKER_API_KEY,
+    ROUTE_CHECKER_PORT
 } = process.env
 
 
@@ -25,4 +26,8 @@ export const pubSubSettings = {
 export const mapSettings = {
     url: OPEN_TRIP_MAP_URL,
     key: ROUTE_CHECKER_API_KEY,
+}
+
+export const apiSettings = {
+    port: ROUTE_CHECKER_PORT
 }

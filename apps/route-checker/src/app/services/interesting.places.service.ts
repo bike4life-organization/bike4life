@@ -12,6 +12,10 @@ class InterestingPlacesService {
         await InterestingPlacesModel.deleteMany({routeId: id});
     }
 
+    async listInterestingPlaces(id: string): Promise<InterestingPlaces[]> {
+        return InterestingPlacesModel.find({routeId: id}).exec()
+    }
+
 }
 
 const interestingPlacesService = new InterestingPlacesService();
