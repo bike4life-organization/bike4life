@@ -66,7 +66,12 @@ class RoutesController {
       const newRoute = req.body
       const idRoute = req.params.id
       const loggedUserId = req.user._id
-
+      if (newRoute._id) {
+        return res.status(403).send({ error: 'The route id is immutable, you can not change it' });
+      }
+      if (!Date.parse(newRoute.date)) {
+        return res.status(400).send({ error: 'Invalid date format' });
+      }
       await this.routesService.updateRoute(newRoute, idRoute, loggedUserId)
       res.sendStatus(200)
     } catch (error) {

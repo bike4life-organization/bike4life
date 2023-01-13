@@ -2,7 +2,7 @@ import * as request from 'supertest'
 import * as mockingoose from 'mockingoose'
 import App from '../../src/app/app'
 import { Server } from 'http'
-import { mockRoute } from '../support/routes'
+import { mockRoute, mockPutRoute } from '../support/routes'
 import { mockUser } from '../support/users'
 
 import { RouteModel } from '../../src/app/models/route.model'
@@ -73,7 +73,7 @@ describe('Routes route', () => {
         mockingoose(RouteModel).toReturn({ ...mockRoute, userId: mockUser._id }, 'findOne');
         mockingoose(RouteModel).toReturn({ ...mockRoute, userId: mockUser._id }, 'findOneAndUpdate');
 
-        const response = await request(server).put(`/routes/${mockRoute._id}`).send(mockRoute, mockRoute.userId, mockRoute.userId)
+        const response = await request(server).put(`/routes/${mockRoute._id}`).send(mockPutRoute, mockRoute.userId, mockRoute.userId)
 
         expect(response.status).toBe(200)
     })

@@ -13,6 +13,9 @@ export class RoutesService {
 
     async removeRoute(id: string, loggedUserId: string): Promise<Route> {
         const route = await this.getRouteById(id)
+        if (!route) {
+            throw new Error('Route not found')
+        }
         if (route.userId !== loggedUserId) {
             throw new Error('You are not allowed to access this resource')
         }
@@ -38,6 +41,9 @@ export class RoutesService {
 
     async updateRoute(putRoute: Route, id: string, loggedUserId: string): Promise<Route> {
         const route = await this.getRouteById(id)
+        if (!route) {
+            throw new Error('Route not found')
+        }
         if (route.userId !== loggedUserId) {
             throw new Error('You are not allowed to access this resource')
         }
