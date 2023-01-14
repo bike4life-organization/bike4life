@@ -1,8 +1,7 @@
-import { routeCreatedHandler } from "../../app/handlers/route-created";
+import { routeOptimizedHandler } from "../../app/handlers/route-optimized";
 import nunjucksService from "../../app/services/nunjucks.service";
 import sendGridService from "../../app/services/sendgrid.service";
-
-describe("routeCreatedHandler", () => {
+describe("routeOptimizedHandler", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -13,13 +12,13 @@ describe("routeCreatedHandler", () => {
       user_id: "1",
       user_email: "test@gmail.com",
     };
-    const expectedTemplate = "routeCreatedCorrectly.html";
-    const expectedSubject = "Your route has been created";
-    const expectedEventType = "RouteCorrectlyCreated";
+    const expectedTemplate = "routeOptimizedCorrectly.html";
+    const expectedSubject = "Your route has been optimized";
+    const expectedEventType = "RouteOptimizedNotification";
 
     nunjucksService.obtainTemplate = jest.fn().mockReturnValue("template");
     sendGridService.sendEmailWithTemplate = jest.fn();
-    await routeCreatedHandler(payload);
+    await routeOptimizedHandler(payload);
     expect(nunjucksService.obtainTemplate).toBeCalledWith(
       expectedTemplate,
       payload
@@ -34,7 +33,7 @@ describe("routeCreatedHandler", () => {
 
   it("should throw an error if the payload is invalid", async () => {
     const payload = { invalid: "data" };
-    await expect(routeCreatedHandler(payload)).rejects.toThrowError(
+    await expect(routeOptimizedHandler(payload)).rejects.toThrowError(
       "Invalid payload"
     );
   });

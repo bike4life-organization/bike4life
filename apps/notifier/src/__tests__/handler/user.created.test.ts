@@ -1,25 +1,22 @@
-import { routeCreatedHandler } from "../../app/handlers/route-created";
+import { userCreatedHandler } from "../../app/handlers/user-created";
 import nunjucksService from "../../app/services/nunjucks.service";
 import sendGridService from "../../app/services/sendgrid.service";
 
-describe("routeCreatedHandler", () => {
+describe("userCreatedHandler", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it("should send an email with the correct template and data", async () => {
-    const payload = {
-      route_id: "1",
-      user_id: "1",
-      user_email: "test@gmail.com",
-    };
-    const expectedTemplate = "routeCreatedCorrectly.html";
-    const expectedSubject = "Your route has been created";
-    const expectedEventType = "RouteCorrectlyCreated";
+    const payload = { user_id: "1", user_email: "test@gmail.com" };
+    const expectedTemplate = "usersCreatedCorrectly.html";
+    const expectedSubject = "Welcome to Bike4Life";
+    const expectedEventType = "UserCorrectlyCreated";
 
     nunjucksService.obtainTemplate = jest.fn().mockReturnValue("template");
     sendGridService.sendEmailWithTemplate = jest.fn();
-    await routeCreatedHandler(payload);
+    await userCreatedHandler(payload);
+
     expect(nunjucksService.obtainTemplate).toBeCalledWith(
       expectedTemplate,
       payload
@@ -34,7 +31,7 @@ describe("routeCreatedHandler", () => {
 
   it("should throw an error if the payload is invalid", async () => {
     const payload = { invalid: "data" };
-    await expect(routeCreatedHandler(payload)).rejects.toThrowError(
+    await expect(userCreatedHandler(payload)).rejects.toThrowError(
       "Invalid payload"
     );
   });

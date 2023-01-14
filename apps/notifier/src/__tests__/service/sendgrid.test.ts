@@ -21,7 +21,12 @@ describe("SendGrid Service", () => {
     MailService.send.mockResolvedValue(null);
 
     // call the sendEmailWithTemplate method
-    await sendGridService.send("Test Subject", payload, template, type);
+    await sendGridService.sendEmailWithTemplate(
+      "Test Subject",
+      payload,
+      template,
+      type
+    );
 
     // assert that the send method was called
     expect(MailService.send).toHaveBeenCalled();
