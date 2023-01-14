@@ -16,7 +16,8 @@
         "main": "apps/routes-api/src/main.ts",
         "tsConfig": "apps/routes-api/tsconfig.app.json",
         "assets": [
-          "apps/routes-api/src/assets"
+          "apps/routes-api/src/assets",
+          "apps/routes-api/src/swagger.yaml"
         ]
       },
       "configurations": {

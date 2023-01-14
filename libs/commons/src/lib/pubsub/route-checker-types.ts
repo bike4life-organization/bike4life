@@ -5,6 +5,18 @@ export type Coordinates = {
   lat: number;
 }
 
+export interface InterestingPlaces {
+  "xid": string,
+  "name": string,
+  "kinds": string,
+  "osm": string,
+  "wikidata": string,
+  "dist": number,
+  "point": Coordinates
+  "rate"?: number
+  "routeId"?: string
+}
+
 export enum RouteCheckerEventType {
   CREATED = 'routeCreated',
   UPDATED = 'routeUpdated',

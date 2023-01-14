@@ -1,5 +1,5 @@
-import {InterestingPlacesModel} from "../models/interesting.places.model";
-import {InterestingPlaces} from "../types/types";
+import { InterestingPlaces } from "@bike4life/commons";
+import { InterestingPlacesModel } from "../models/interesting.places.model";
 
 
 class InterestingPlacesService {
@@ -9,7 +9,11 @@ class InterestingPlacesService {
     }
 
     async removeInterestingPlaces(id: string) {
-        await InterestingPlacesModel.deleteMany({routeId: id});
+        await InterestingPlacesModel.deleteMany({ routeId: id });
+    }
+
+    async listInterestingPlaces(id: string): Promise<InterestingPlaces[]> {
+        return InterestingPlacesModel.find({ routeId: id }).exec()
     }
 
 }
