@@ -69,6 +69,7 @@ services:
       dockerfile: ./apps/route-checker/Dockerfile
     ports:
       - "3004:3333"
+      - "8083:8083"
     restart: "unless-stopped"
     links:
       - pubsub-emulator
