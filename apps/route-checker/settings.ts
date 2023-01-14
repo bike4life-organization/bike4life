@@ -9,12 +9,13 @@ const {
     ROUTE_CHECKER_PUBSUB_TOPIC_NAME,
     OPEN_TRIP_MAP_URL,
     ROUTE_CHECKER_API_KEY,
-    ROUTE_CHECKER_PORT
+    ROUTE_CHECKER_PORT,
+    ROUTE_CHECKER_DATABASE_URL
 } = process.env
 
 
 export const mongoConnectionSettings = {
-    url: `mongodb://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_HOST}:${MONGO_DB_PORT}/${ROUTE_CHECKER_DATABASE_NAME}?authSource=admin`,
+    url: ROUTE_CHECKER_DATABASE_URL ? ROUTE_CHECKER_DATABASE_URL : `mongodb://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_HOST}:${MONGO_DB_PORT}/${ROUTE_CHECKER_DATABASE_NAME}?authSource=admin`,
 }
 
 export const pubSubSettings = {
