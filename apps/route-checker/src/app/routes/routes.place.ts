@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { Routes } from '@bike4life/api-interfaces';
 import InterestingPlacesController from '../controllers/interesting.places.controller';
-import {SecretKeyMiddleware} from "../middlewares/secret.key.middleware";
+import { SecretKeyMiddleware } from "../middlewares/secret.key.middleware";
 
 
 class RoutesPlace implements Routes {
