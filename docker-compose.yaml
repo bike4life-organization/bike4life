@@ -75,3 +75,12 @@ services:
     depends_on:
       - pubsub-emulator
     env_file: .env.production
+
+  frontend:
+    build:
+      context: ./bike4life-frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - "8088:80"
+    restart: "unless-stopped"
+    env_file: .env.production
