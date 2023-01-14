@@ -67,7 +67,7 @@ class App {
       definition: {
         openapi: '3.0.0',
         info: {
-          title: 'Hello World',
+          title: 'Routes API',
           version: '1.0.0',
         },
       },

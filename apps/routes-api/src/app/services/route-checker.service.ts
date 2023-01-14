@@ -1,6 +1,7 @@
-import { PubSubClient, logger, RouteCheckerEventType, RouteCheckerMessage } from "@bike4life/commons"
+import { PubSubClient, logger, RouteCheckerEventType, RouteCheckerMessage, InterestingPlaces } from "@bike4life/commons"
+import axios from "axios"
 import { Route } from "../models/route.model"
-import { pubsubSettings } from '../settings'
+import { pubsubSettings, routeCheckerAPISecretKey } from '../settings'
 
 export class RouteCheckerService {
 
@@ -31,4 +32,17 @@ export class RouteCheckerService {
     }
   }
 
+  async getRouteInterestingPlaces(routeId: string): Promise<InterestingPlaces[]> {
+    try {
+      const interestingPlaces = await axios.get<InterestingPlaces[]>(`${process.env.ROUTE_CHECKER_URL}/places/${routeId}`, {
+        headers: {
+          secret_key: routeCheckerAPISecretKey
+        }
+      })
+        .then((response) => response.data)
+      return interestingPlaces
+    } catch (error) {
+      return []
+    }
+  }
 }

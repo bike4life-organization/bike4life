@@ -85,7 +85,7 @@ describe('Routes route', () => {
     })
 
     test('GET /routes/:id should return a 404 if the route is not found', async () => {
-        mockingoose(RouteModel).toReturn(null, 'findOne');
+        mockingoose(RouteModel).toReturn(NaN, 'findOne');
 
         const response = await request(server).get(`/routes/:id`).send(mockRoute._id)
         expect(response.status).toBe(404)

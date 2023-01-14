@@ -25,3 +25,6 @@ export const pubsubSettings = {
   notifierTopic: NOTIFIER_PUBSUB_TOPIC_NAME,
   routeCheckerTopic: ROUTE_CHECKER_PUBSUB_TOPIC_NAME
 }
+
+export const routeCheckerAPIUri = process.env.ROUTE_CHECKER_URL
+export const routeCheckerAPISecretKey = process.env.API_SECRET_KEY

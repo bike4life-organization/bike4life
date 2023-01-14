@@ -1,8 +1,7 @@
-import axios, {AxiosPromise, AxiosRequestConfig} from 'axios';
-import {mapSettings} from "../../../settings";
-import {InterestingPlaces} from "../types/types";
-import {findMax, findMin} from "../util/utils";
-import {Coordinates} from "@bike4life/commons";
+import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+import { mapSettings } from "../../../settings";
+import { findMax, findMin } from "../util/utils";
+import { Coordinates, InterestingPlaces } from "@bike4life/commons";
 
 const config: AxiosRequestConfig = {
     headers: {

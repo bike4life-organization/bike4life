@@ -39,7 +39,7 @@ class RoutesController {
       const { id } = req.params
       const loggedUserId = req.user._id
       const route = await this.routesService.getRouteById(id)
-      if (!route) {
+      if (!route._id) {
         return res.status(404).send({ message: 'Route not found' })
       }
       if (route.userId !== loggedUserId) {

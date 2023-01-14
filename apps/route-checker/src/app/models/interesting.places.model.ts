@@ -1,5 +1,5 @@
-import {Schema, model} from 'mongoose'
-import {InterestingPlaces} from "../types/types";
+import { InterestingPlaces } from '@bike4life/commons'
+import { Schema, model } from 'mongoose'
 
 const interestingPlacesSchema = new Schema<InterestingPlaces>({
     xid: {

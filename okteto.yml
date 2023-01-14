@@ -1,0 +1,26 @@
+name: bike4life
+
+build:
+  auth-api:
+    context: .
+    dockerfile: apps/auth-api/Dockerfile
+
+  notifier:
+    context: .
+    dockerfile: apps/notifier/Dockerfile
+
+  route-checker:
+    context: .
+    dockerfile: apps/route-checker/Dockerfile
+
+  routes-api:
+    context: .
+    dockerfile: apps/routes-api/Dockerfile
+
+  api-gateway:
+    context: .
+    dockerfile: apps/api-gateway/Dockerfile
+
+deploy:
+  compose:
+    file: docker-compose.yaml

@@ -34,9 +34,20 @@ export class RoutesService {
     }
 
     async getRouteById(id: string): Promise<Route> {
-        return RouteModel
+        const route = await RouteModel
             .findById(id)
             .exec()
+        const routeInterestingPlaces = await this.routeCheckerService.getRouteInterestingPlaces(route._id)
+        return {
+            coordinates: route.coordinates,
+            interestingPlaces: routeInterestingPlaces,
+            date: route.date,
+            name: route.name,
+            description: route.description,
+            estimatedDuration: route.estimatedDuration,
+            userId: route.userId,
+            _id: route._id
+        }
     }
 
     async updateRoute(putRoute: Route, id: string, loggedUserId: string): Promise<Route> {
