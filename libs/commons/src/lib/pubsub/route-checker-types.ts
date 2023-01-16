@@ -26,6 +26,8 @@ export enum RouteCheckerEventType {
 export interface RouteCheckerEventData {
   _id: string;
   coordinates: Coordinates[];
+  user_id: string;
+  user_email: string;
 }
 
 export interface RouteCheckerMessage extends Message {

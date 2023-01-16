@@ -9,6 +9,7 @@ export const mockRoute: Route = {
   description: "description",
   name: "name",
   userId: "userId",
+  userEmail: "userId@test.com",
   _id: "id",
   estimatedDuration: 1,
 }

@@ -1,39 +1,40 @@
-import { logger, NotifierMessageTypes, PubSubClient } from '@bike4life/commons'
-import { Message } from '@google-cloud/pubsub'
-import { getMessageHandler } from '../handlers';
-import { pubsubSettings as pbs } from '../settings';
+import { logger, NotifierMessageTypes, PubSubClient } from "@bike4life/commons";
+import { Message } from "@google-cloud/pubsub";
+import { getMessageHandler } from "../handlers";
+import { pubsubSettings as pbs } from "../settings";
 
 export default async function startPullListener(): Promise<void> {
   try {
-    const pubsubClient = new PubSubClient(pbs.projectId, logger)
-    const subscription = await pubsubClient.getSubscription(pbs.topicName, pbs.subscriptionName)
-    logger.info('listening messages from topics')
+    const pubsubClient = new PubSubClient(pbs.projectId, logger);
+    const subscription = await pubsubClient.getSubscription(
+      pbs.topicName,
+      pbs.subscriptionName
+    );
+    logger.info("listening messages from topics");
 
-    subscription.on('message', async (message: Message) => {
+    subscription.on("message", async (message: Message) => {
       try {
         if (!message.attributes.type) {
-          throw new Error('Message type is not defined')
+          throw new Error("Message type is not defined");
         }
-        const handler = getMessageHandler(message.attributes.type as NotifierMessageTypes)
-        await handler(JSON.parse(message.data.toString()))
+        const handler = getMessageHandler(
+          message.attributes.type as NotifierMessageTypes
+        );
+        await handler(JSON.parse(message.data.toString()));
 
-        message.ack()
+        message.ack();
       } catch (err) {
-        const error = err as Error
-        if (error.message === 'Invalid payload') {
-          message.ack()
-        }
-        throw err
+        message.ack();
+        throw err;
       }
-    })
-    subscription.on('error', err => {
-      console.log(err)
-      logger.error('error received from subscription')
-    })
+    });
+    subscription.on("error", (err) => {
+      console.log(err);
+      logger.error("error received from subscription");
+    });
   } catch (err) {
-    console.log(err)
-    logger.error({ error: err })
-    process.exit(1)
+    console.log(err);
+    logger.error({ error: err });
+    process.exit(1);
   }
 }
-

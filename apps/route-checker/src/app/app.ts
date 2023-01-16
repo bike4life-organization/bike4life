@@ -21,22 +21,22 @@ class App {
         this.port = apiSettings.port || 3333
         this.env = process.env.NODE_ENV || 'development'
         this.routes = routes
+        this.start();
     }
 
-    start():void {
+    start(): void {
         this.connectToDatabase();
         this.initializeMiddlewares();
         this.initializeRoutes();
         this.initializeSwagger();
         this.initializeErrorHandling();
-        this.listen();
-        startPullListener().then();
     }
 
     listen(): void {
         this.app.listen(this.port, () => {
             console.log(`App listening on the port ${this.port}`)
         })
+        startPullListener().then();
     }
 
     async stop(): Promise<void> {

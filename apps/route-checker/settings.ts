@@ -10,7 +10,8 @@ const {
     OPEN_TRIP_MAP_URL,
     ROUTE_CHECKER_API_KEY,
     ROUTE_CHECKER_PORT,
-    ROUTE_CHECKER_DATABASE_URL
+    ROUTE_CHECKER_DATABASE_URL,
+    NOTIFIER_PUBSUB_TOPIC_NAME
 } = process.env
 
 
@@ -21,7 +22,8 @@ export const mongoConnectionSettings = {
 export const pubSubSettings = {
     projectId: PUBSUB_PROJECT_ID,
     subscriptionName: ROUTE_CHECKER_PUBSUB_SUBSCRIPTION_NAME,
-    topicName: ROUTE_CHECKER_PUBSUB_TOPIC_NAME
+    topicName: ROUTE_CHECKER_PUBSUB_TOPIC_NAME,
+    notifierTopic: NOTIFIER_PUBSUB_TOPIC_NAME,
 }
 
 export const mapSettings = {
