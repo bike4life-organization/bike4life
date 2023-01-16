@@ -1,3 +1,4 @@
+import { InterestingPlaces } from '@bike4life/commons'
 import { Schema, model } from 'mongoose'
 
 export interface Route {
@@ -6,8 +7,9 @@ export interface Route {
     name: string
     description: string
     estimatedDuration: number
-    userId: string
+    userId: string,
     _id?: string
+    interestingPlaces?: InterestingPlaces[]
 }
 
 const routeSchema = new Schema<Route>({

@@ -19,6 +19,8 @@ jest.mock("@bike4life/commons", () => ({
   }
 }));
 
+jest.mock('../../src/app/services/notifier.service')
+
 describe('Users route', () => {
   const app = new App([new UsersRoute()])
   let server: Server

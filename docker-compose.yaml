@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   pubsub-emulator:
@@ -11,21 +11,77 @@ services:
         "pubsub",
         "start",
         "--host-port=0.0.0.0:8085",
-        "--project=dev-pubsub-project"
+        "--project=bike4life-project",
       ]
     ports:
       - "8085:8085"
 
-  mongo:
-    image: mongo:5.0
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/Dockerfile
     ports:
-      - '27017:27017'
-    volumes:
-      - mongodbdata:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=user
-      - MONGO_INITDB_ROOT_PASSWORD=S3cret
-      - MONGO_INITDB_DATABASE=bike4life
+      - "80:80"
+    restart: "unless-stopped"
 
-volumes:
-  mongodbdata:
+  auth-api:
+    build:
+      context: .
+      dockerfile: ./apps/auth-api/Dockerfile
+    ports:
+      - "8081:8081"
+    restart: "unless-stopped"
+    links:
+      - pubsub-emulator
+    depends_on:
+      - pubsub-emulator
+    env_file: .env.production
+
+  routes-api:
+    build:
+      context: .
+      dockerfile: ./apps/routes-api/Dockerfile
+    ports:
+      - "8080:8080"
+    restart: "unless-stopped"
+    links:
+      - pubsub-emulator
+    depends_on:
+      - pubsub-emulator
+    env_file: .env.production
+
+  notifier:
+    build:
+      context: .
+      dockerfile: ./apps/notifier/Dockerfile
+    ports:
+      - "8082:8082"
+    restart: "unless-stopped"
+    links:
+      - pubsub-emulator
+    depends_on:
+      - pubsub-emulator
+    env_file: .env.production
+
+  route-checker:
+    build:
+      context: .
+      dockerfile: ./apps/route-checker/Dockerfile
+    ports:
+      - "3004:3333"
+      - "8083:8083"
+    restart: "unless-stopped"
+    links:
+      - pubsub-emulator
+    depends_on:
+      - pubsub-emulator
+    env_file: .env.production
+
+  frontend:
+    build:
+      context: ./bike4life-frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - "8088:80"
+    restart: "unless-stopped"
+    env_file: .env.production

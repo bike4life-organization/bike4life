@@ -4,6 +4,7 @@ const {
   NOTIFIER_PUBSUB_TOPIC_NAME,
   TO_REPLY_TO_EMAIL_SENDGRID,
   SENDGRID_API_KEY,
+  NOTIFIER_DATABASE_URL,
   MONGO_DB_HOST,
   MONGO_DB_PORT,
   MONGO_DB_USER,
@@ -27,7 +28,7 @@ export const sendgridSettings = {
 };
 
 export const mongoConnectionSettings = {
-  url: `mongodb://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_HOST}:${MONGO_DB_PORT}/${NOTIFIER_DATABASE_NAME}?authSource=admin`,
+  url: NOTIFIER_DATABASE_URL ? NOTIFIER_DATABASE_URL : `mongodb://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_HOST}:${MONGO_DB_PORT}/${NOTIFIER_DATABASE_NAME}?authSource=admin`,
 }
 
 export const publicDocSettings = {

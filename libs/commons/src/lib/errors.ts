@@ -13,5 +13,8 @@ export function checkError(err: HttpException) {
   if (err.message.includes('not found')) {
     return new HttpException(404, err.message)
   }
+  if (err.message.includes('You are not allowed to access this resource')) {
+    return new HttpException(403, err.message)
+  }
   return err
 }

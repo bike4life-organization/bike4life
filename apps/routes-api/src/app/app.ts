@@ -3,11 +3,12 @@ import * as express from 'express'
 import * as swaggerJSDoc from 'swagger-jsdoc'
 import * as swaggerUi from 'swagger-ui-express'
 import * as path from 'path'
+import * as cors from 'cors'
 import { connect, set } from 'mongoose'
 
 import { Routes } from '@bike4life/api-interfaces'
 import errorMiddleware from './middlewares/error.middleware'
-import { mongoConnectionSettings } from './settings'
+import { apiSettings, mongoConnectionSettings } from './settings'
 
 class App {
   app: Application
@@ -16,7 +17,7 @@ class App {
 
   constructor(routes: Routes[]) {
     this.app = express()
-    this.port = process.env.PORT || 3333
+    this.port = apiSettings.port || 3333
     this.env = process.env.NODE_ENV || 'development'
 
     this.connectToDatabase()
@@ -47,6 +48,9 @@ class App {
   }
 
   private initializeMiddlewares(): void {
+    this.app.use(cors({
+      origin: '*'
+    }))
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
   }
@@ -63,7 +67,7 @@ class App {
       definition: {
         openapi: '3.0.0',
         info: {
-          title: 'Hello World',
+          title: 'Routes API',
           version: '1.0.0',
         },
       },

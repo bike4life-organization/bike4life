@@ -1,15 +1,19 @@
 const {
+  AUTH_API_DATABASE_URL,
   MONGO_DB_HOST,
   MONGO_DB_PORT,
   MONGO_DB_USER,
   MONGO_DB_PASSWORD,
+  AUTH_API_PORT,
   AUTH_API_DATABASE_NAME,
-  JWT_SECRET
+  JWT_SECRET,
+  PUBSUB_PROJECT_ID,
+  NOTIFIER_PUBSUB_TOPIC_NAME
 } = process.env
 
 
 export const mongoConnectionSettings = {
-  url: `mongodb://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_HOST}:${MONGO_DB_PORT}/${AUTH_API_DATABASE_NAME}?authSource=admin`,
+  url: AUTH_API_DATABASE_URL ? AUTH_API_DATABASE_URL : `mongodb://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@${MONGO_DB_HOST}:${MONGO_DB_PORT}/${AUTH_API_DATABASE_NAME}?authSource=admin`,
 }
 
 export const avatarSettings = {
@@ -18,4 +22,13 @@ export const avatarSettings = {
 
 export const secretSettings = {
   jwt: JWT_SECRET
+}
+
+export const apiSettings = {
+  port: AUTH_API_PORT
+}
+
+export const pubsubSettings = {
+  projectId: PUBSUB_PROJECT_ID,
+  notifierTopic: NOTIFIER_PUBSUB_TOPIC_NAME
 }
