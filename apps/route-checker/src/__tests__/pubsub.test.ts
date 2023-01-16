@@ -183,7 +183,7 @@ describe('PubSub Tests ', () => {
     test('RouteCheckerEventType.DELETED - successful ', async () => {
         const deleteInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'deleteMany');
         await getEventHandler({type: RouteCheckerEventType.DELETED})(mockRouteCheckerEventData)
-        expect(deleteInterestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+        expect(deleteInterestingPlacesModelSpy).toHaveBeenCalledTimes(1)
 
     })
 
