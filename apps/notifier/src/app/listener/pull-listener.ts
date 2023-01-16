@@ -25,7 +25,6 @@ export default async function startPullListener(): Promise<void> {
         message.ack();
       } catch (err) {
         message.ack();
-        throw err;
       }
     });
     subscription.on("error", (err) => {
