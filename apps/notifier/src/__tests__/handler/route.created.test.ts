@@ -15,7 +15,7 @@ describe("routeCreatedHandler", () => {
     };
     const expectedTemplate = "routeCreatedCorrectly.html";
     const expectedSubject = "Your route has been created";
-    const expectedEventType = "RouteCorrectlyCreated";
+    const expectedEventType = "ROUTE_CREATED";
 
     nunjucksService.obtainTemplate = jest.fn().mockReturnValue("template");
     sendGridService.sendEmailWithTemplate = jest.fn();

@@ -14,7 +14,7 @@ describe("routeOptimizedHandler", () => {
     };
     const expectedTemplate = "routeOptimizedCorrectly.html";
     const expectedSubject = "Your route has been optimized";
-    const expectedEventType = "RouteOptimizedNotification";
+    const expectedEventType = "ROUTE_OPTIMIZED";
 
     nunjucksService.obtainTemplate = jest.fn().mockReturnValue("template");
     sendGridService.sendEmailWithTemplate = jest.fn();

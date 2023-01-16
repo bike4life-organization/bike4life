@@ -11,7 +11,7 @@ describe("userCreatedHandler", () => {
     const payload = { user_id: "1", user_email: "test@gmail.com" };
     const expectedTemplate = "usersCreatedCorrectly.html";
     const expectedSubject = "Welcome to Bike4Life";
-    const expectedEventType = "UserCorrectlyCreated";
+    const expectedEventType = "USER_CREATED";
 
     nunjucksService.obtainTemplate = jest.fn().mockReturnValue("template");
     sendGridService.sendEmailWithTemplate = jest.fn();
