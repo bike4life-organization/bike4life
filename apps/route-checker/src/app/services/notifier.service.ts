@@ -11,8 +11,8 @@ export class NotifierService {
 
     async sendInterestingPlacesNotification(event: RouteCheckerEventData): Promise<void> {
         try {
-            if (!event.user_id)
-                throw new Error('The route does not belong to a user')
+            if (!event.user_id || !event.user_email)
+                throw new Error('The user data is not valid')
 
             const message: NotifierMessage = {
                 attributes: {

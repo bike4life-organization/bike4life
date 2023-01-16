@@ -56,7 +56,7 @@ export class RoutesService {
         }
         const result = await RouteModel
             .findByIdAndUpdate(id, putRoute)
-        await this.routeCheckerService.sendRouteNotification({...putRoute, _id: id}, RouteCheckerEventType.UPDATED)
+        await this.routeCheckerService.sendRouteNotification({...putRoute, _id: id, userEmail: result.userEmail}, RouteCheckerEventType.UPDATED)
         return result
     }
 

@@ -12,12 +12,11 @@ export class RouteCheckerService {
   }
 
   async sendRouteNotification(route: Route, type: RouteCheckerEventType): Promise<void> {
-      console.log(route.userEmail)
     try {
-      if (!route.userId) {
-        throw new Error('The route does not belong to a user')
+      if (!route.userId || !route.userEmail) {
+        throw new Error('The user data is not valid')
       }
-      const routeCreatedMessage: RouteCheckerMessage = {
+      const message: RouteCheckerMessage = {
           attributes: {
               type
           },
@@ -30,7 +29,7 @@ export class RouteCheckerService {
               user_email: route.userEmail
           }
       }
-      await this.pubSubClient.publishMessage(pubsubSettings.routeCheckerTopic, routeCreatedMessage)
+      await this.pubSubClient.publishMessage(pubsubSettings.routeCheckerTopic, message)
     } catch (error) {
       // If that fails, we should silently fail as this shouldn't block the request flow
       logger.error(error)
