@@ -21,6 +21,10 @@ build:
     context: .
     dockerfile: apps/api-gateway/Dockerfile
 
+  frontend:
+    context: ./bike4life-frontend/
+    dockerfile: ./Dockerfile
+
 deploy:
   compose:
     file: docker-compose.yaml
