@@ -20,12 +20,9 @@ export class NotifierService {
           type: NotifierMessageTypes.ROUTE_CREATED
         },
         payload: {
-          to: route.userId,
-          route: {
-            name: route.name,
-            description: route.description,
-            date: route.date
-          }
+          route_id: route._id,
+          user_id: route.userId,
+          user_email: route.userEmail
         }
       }
       await this.pubSubClient.publishMessage(pubsubSettings.notifierTopic, routeCreatedMessage)

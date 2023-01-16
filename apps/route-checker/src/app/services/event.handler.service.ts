@@ -1,6 +1,7 @@
 import mapService from "./map.service";
 import interestingPlacesService from "./interesting.places.service";
-import {RouteCheckerEventData, RouteCheckerEventType} from "@bike4life/commons";
+import {InterestingPlaces, logger, RouteCheckerEventData, RouteCheckerEventType} from "@bike4life/commons";
+import notifierService from "./notifier.service";
 
 const eventsHandlers = {
     [RouteCheckerEventType.CREATED]: routeCreatedHandler,
@@ -9,33 +10,49 @@ const eventsHandlers = {
 }
 
 function routeCreatedHandler(event: RouteCheckerEventData) {
+    if (!event?._id?.length)
+        return;
     mapService.findPlacesByBBox(event.coordinates).then(response => {
-        if (!isOK(response) || !event?._id?.length)
-            return;
-        createInterestingPlaces(response, event);
+        if (isOK(response)) {
+            createInterestingPlaces(response, event);
+        }
+    }).catch(err => {
+        console.log(err);
+        logger.error({error: err});
     });
 }
 
 function routeUpdatedHandler(event: RouteCheckerEventData) {
+    if (!event?._id?.length)
+        return;
     mapService.findPlacesByBBox(event.coordinates).then(response => {
-        if (!isOK(response) || !event?._id?.length)
+        if (!isOK(response))
             return;
         routeDeletedHandler(event);
         createInterestingPlaces(response, event);
+    }).catch(err => {
+        console.log(err);
+        logger.error({error: err});
     });
 }
 
 async function routeDeletedHandler(event: RouteCheckerEventData) {
+    if (!event?._id?.length)
+        return;
     await interestingPlacesService.removeInterestingPlaces(event._id);
 }
 
 function createInterestingPlaces(response: any, event: RouteCheckerEventData) {
-    response.data.forEach(value => value.routeId = event._id);
-    interestingPlacesService.createInterestingPlaces(response.data);
+    const data = response?.data.filter((place: InterestingPlaces) => place?.name.length > 0);
+    if (!data?.length)
+        return;
+    data.forEach((place: InterestingPlaces) => place.routeId = event._id);
+    interestingPlacesService.createInterestingPlaces(data);
+    notifierService.sendInterestingPlacesNotification(event)
 }
 
 function isOK(response: any) {
-    return response?.status === 200 && response.data?.length > 0;
+    return response?.status === 200;
 }
 
 export function getEventHandler(attributes: any): (payload: string) => Promise<void> {

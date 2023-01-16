@@ -11,19 +11,24 @@ export class RouteCheckerService {
     this.pubSubClient = new PubSubClient(pubsubSettings.projectId, logger)
   }
 
-  async sendRouteCreatedNotification(route: Route): Promise<void> {
+  async sendRouteNotification(route: Route, type: RouteCheckerEventType): Promise<void> {
+      console.log(route.userEmail)
     try {
       if (!route.userId) {
         throw new Error('The route does not belong to a user')
       }
       const routeCreatedMessage: RouteCheckerMessage = {
-        attributes: {
-          type: RouteCheckerEventType.CREATED
-        },
-        payload: {
-          _id: route._id,
-          coordinates: route.coordinates.map((coordinate) => { return { lat: coordinate[0], lon: coordinate[1] } })
-        }
+          attributes: {
+              type
+          },
+          payload: {
+              _id: route._id,
+              coordinates: route.coordinates.map((coordinate) => {
+                  return {lat: coordinate[1], lon: coordinate[0]}
+              }),
+              user_id: route.userId,
+              user_email: route.userEmail
+          }
       }
       await this.pubSubClient.publishMessage(pubsubSettings.routeCheckerTopic, routeCreatedMessage)
     } catch (error) {

@@ -1,6 +1,7 @@
-import { Route, RouteModel } from "../models/route.model"
-import { NotifierService } from "./notifier.service"
-import { RouteCheckerService } from "./route-checker.service"
+import {Route, RouteModel} from "../models/route.model"
+import {NotifierService} from "./notifier.service"
+import {RouteCheckerService} from "./route-checker.service"
+import {RouteCheckerEventType} from "@bike4life/commons";
 
 export class RoutesService {
     private notifierService: NotifierService
@@ -26,7 +27,7 @@ export class RoutesService {
         const result = await RouteModel
             .create(newRoute)
         await this.notifierService.sendRouteCreatedNotification(result)
-        await this.routeCheckerService.sendRouteCreatedNotification(result)
+        await this.routeCheckerService.sendRouteNotification(result, RouteCheckerEventType.CREATED)
         return result
     }
 
@@ -43,6 +44,7 @@ export class RoutesService {
             description: route.description,
             estimatedDuration: route.estimatedDuration,
             userId: route.userId,
+            userEmail: route.userEmail,
             _id: route._id
         }
     }
@@ -54,10 +56,11 @@ export class RoutesService {
         }
         const result = await RouteModel
             .findByIdAndUpdate(id, putRoute)
+        await this.routeCheckerService.sendRouteNotification({...putRoute, _id: id}, RouteCheckerEventType.UPDATED)
         return result
     }
 
     async listRoutes(userId: string): Promise<Route[]> {
-        return RouteModel.find({ userId }).exec()
+        return RouteModel.find({userId}).exec()
     }
 }
