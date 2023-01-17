@@ -1,6 +1,7 @@
 import {
   NotifierMessageTypes,
   RouteOptimizedEventMessage,
+  logger,
 } from "@bike4life/commons";
 import nunjucksService from "../services/nunjucks.service";
 import sendGridService from "../services/sendgrid.service";
@@ -19,7 +20,7 @@ function isRouteOptimizedEventMessage(
 
 export async function routeOptimizedHandler(payload: unknown) {
   if (!isRouteOptimizedEventMessage(payload)) {
-    throw new Error("Invalid payload");
+    logger.info("Invalid payload", { payload: JSON.stringify(payload) });
   }
   const subject = "Your route has been optimized";
   const emailTemplate = "routeOptimizedCorrectly.html";

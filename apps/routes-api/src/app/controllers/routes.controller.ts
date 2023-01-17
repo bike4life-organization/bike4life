@@ -56,6 +56,7 @@ class RoutesController {
     try {
       const newRoute = req.body
       newRoute.userId = req.user._id
+      newRoute.userEmail = req.user.email
       await this.routesService.createRoute(newRoute)
       res.sendStatus(201)
     } catch (error) {

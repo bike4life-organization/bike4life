@@ -1,4 +1,4 @@
-import { PubSubClient } from '@bike4life/commons';
+import { PubSubClient, RouteCheckerEventType } from '@bike4life/commons';
 import { RouteCheckerService } from '../../app/services/route-checker.service'
 import { mockRoute } from '../support/routes'
 
@@ -11,7 +11,7 @@ describe('Notifier service', () => {
   })
 
   it('should send a PubSub message when a route is created', async () => {
-    await service.sendRouteCreatedNotification(mockRoute)
+    await service.sendRouteNotification(mockRoute, RouteCheckerEventType.CREATED)
 
     expect(publishMessageSpy).toHaveBeenCalledTimes(1)
   })

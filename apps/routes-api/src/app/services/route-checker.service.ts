@@ -11,21 +11,25 @@ export class RouteCheckerService {
     this.pubSubClient = new PubSubClient(pubsubSettings.projectId, logger)
   }
 
-  async sendRouteCreatedNotification(route: Route): Promise<void> {
+  async sendRouteNotification(route: Route, type: RouteCheckerEventType): Promise<void> {
     try {
-      if (!route.userId) {
-        throw new Error('The route does not belong to a user')
+      if (!route.userId || !route.userEmail) {
+        throw new Error('The user data is not valid')
       }
-      const routeCreatedMessage: RouteCheckerMessage = {
-        attributes: {
-          type: RouteCheckerEventType.CREATED
-        },
-        payload: {
-          _id: route._id,
-          coordinates: route.coordinates.map((coordinate) => { return { lat: coordinate[0], lon: coordinate[1] } })
-        }
+      const message: RouteCheckerMessage = {
+          attributes: {
+              type
+          },
+          payload: {
+              _id: route._id,
+              coordinates: route.coordinates.map((coordinate) => {
+                  return {lat: coordinate[1], lon: coordinate[0]}
+              }),
+              user_id: route.userId,
+              user_email: route.userEmail
+          }
       }
-      await this.pubSubClient.publishMessage(pubsubSettings.routeCheckerTopic, routeCreatedMessage)
+      await this.pubSubClient.publishMessage(pubsubSettings.routeCheckerTopic, message)
     } catch (error) {
       // If that fails, we should silently fail as this shouldn't block the request flow
       logger.error(error)

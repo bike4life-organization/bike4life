@@ -8,8 +8,9 @@ export const mockRoute: Route = {
   date: new Date(),
   description: "description",
   name: "name",
-  userId: "637a84fe0aea056e2ff60b7a",
-  _id: '637a84fe0aea056e2ff60b72',
+  userId: "userId",
+  userEmail: "userId@test.com",
+  _id: "id",
   estimatedDuration: 1,
 }
 
@@ -22,5 +23,6 @@ export const mockPutRoute: Route = {
   description: "description",
   name: "name",
   userId: "637a84fe0aea056e2ff60b7a",
+  userEmail: "userId@test.com",
   estimatedDuration: 1,
 }
