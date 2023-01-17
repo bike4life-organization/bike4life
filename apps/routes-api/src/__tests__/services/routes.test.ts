@@ -1,10 +1,10 @@
-import { RouteModel } from '../../src/app/models/route.model';
-import { RoutesService } from '../../src/app/services/routes.service'
+import { RouteModel } from '../../app/models/route.model';
+import { RoutesService } from '../../app/services/routes.service'
 import * as mockingoose from 'mockingoose'
 import { mockRoute } from '../support/routes'
 
-jest.mock('../../src/app/services/notifier.service')
-jest.mock('../../src/app/services/route-checker.service')
+jest.mock('../../app/services/notifier.service')
+jest.mock('../../app/services/route-checker.service')
 
 describe('Route service', () => {
   const service = new RoutesService();

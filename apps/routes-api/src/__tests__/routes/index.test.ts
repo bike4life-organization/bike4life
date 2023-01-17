@@ -1,10 +1,10 @@
 
 import * as request from 'supertest'
 import * as mockingoose from 'mockingoose'
-import IndexRoute from '../../src/app/routes/index.route'
-import App from '../../src/app/app'
+import IndexRoute from '../../app/routes/index.route'
+import App from '../../app/app'
 import { Server } from 'http'
-import { RouteModel } from '../../src/app/models/route.model'
+import { RouteModel } from '../../app/models/route.model'
 
 describe('Check index route', () => {
     const app = new App([new IndexRoute()])

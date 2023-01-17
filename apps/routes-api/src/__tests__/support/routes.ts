@@ -1,4 +1,4 @@
-import { Route } from "../../src/app/models/route.model";
+import { Route } from "../../app/models/route.model";
 
 export const mockRoute: Route = {
   coordinates: [

@@ -1,5 +1,5 @@
 import { PubSubClient } from '@bike4life/commons';
-import { NotifierService } from '../../src/app/services/notifier.service'
+import { NotifierService } from '../../app/services/notifier.service'
 import { mockRoute } from '../support/routes'
 
 describe('Notifier service', () => {

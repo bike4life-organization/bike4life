@@ -1,12 +1,12 @@
 import * as request from 'supertest'
 import * as mockingoose from 'mockingoose'
-import App from '../../src/app/app'
+import App from '../../app/app'
 import { Server } from 'http'
 import { mockRoute, mockPutRoute } from '../support/routes'
 import { mockUser } from '../support/users'
 
-import { RouteModel } from '../../src/app/models/route.model'
-import RoutesRoute from '../../src/app/routes/routes.route'
+import { RouteModel } from '../../app/models/route.model'
+import RoutesRoute from '../../app/routes/routes.route'
 
 jest.mock("@bike4life/commons", () => ({
     authMiddleware: (req, res, next) => {
@@ -21,8 +21,8 @@ jest.mock("@bike4life/commons", () => ({
     },
 }));
 
-jest.mock('../../src/app/services/notifier.service')
-jest.mock('../../src/app/services/route-checker.service')
+jest.mock('../../app/services/notifier.service')
+jest.mock('../../app/services/route-checker.service')
 
 describe('Routes route', () => {
     const app = new App([new RoutesRoute()])
