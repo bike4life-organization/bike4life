@@ -16,7 +16,8 @@
         "main": "apps/route-checker/src/main.ts",
         "tsConfig": "apps/route-checker/tsconfig.app.json",
         "assets": [
-          "apps/route-checker/src/assets"
+          "apps/route-checker/src/assets",
+          "apps/route-checker/src/swagger.yaml"
         ]
       },
       "configurations": {
