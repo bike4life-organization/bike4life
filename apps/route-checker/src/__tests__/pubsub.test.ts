@@ -1,10 +1,13 @@
 import RoutesPlace from "../app/routes/routes.place";
 import {Server} from 'http'
-import * as request from 'supertest'
 import * as mockingoose from 'mockingoose'
 import {InterestingPlacesModel} from "../app/models/interesting.places.model";
 import {mockInterestingPlaces} from "./support/interesting.places";
 import App from "../app/app";
+import {PubSubClient, RouteCheckerEventType} from "@bike4life/commons";
+import MapService from "../app/services/map.service";
+import {mockRouteCheckerEventData} from "./support/route.checker.event.data";
+import {getEventHandler} from "../app/services/event.handler.service";
 
 
 describe('PubSub Tests ', () => {
@@ -13,12 +16,10 @@ describe('PubSub Tests ', () => {
 
     beforeAll(async () => {
         server = await app.app.listen()
-        process.env.API_SECRET_KEY = 'API_SECRET_KEY';
     })
 
     afterAll(() => {
         server.close()
-        process.env.API_SECRET_KEY = '';
     })
 
     afterEach(() => {
@@ -26,17 +27,178 @@ describe('PubSub Tests ', () => {
         mockingoose.resetAll()
     })
 
-    test('GET /places/:id should return a 200', async () => {
-        mockingoose(InterestingPlacesModel).toReturn([mockInterestingPlaces], 'find')
+    //RouteCheckerEventType.CREATED
+    test('RouteCheckerEventType.CREATED - status 200', async () => {
+        const publishMessageSpy = jest.spyOn(PubSubClient.prototype, 'publishMessage');
+        const interestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'insertMany');
+        const findPlacesByBBoxSpy = jest.spyOn(MapService, 'findPlacesByBBox')
+            .mockReturnValue(Promise.resolve({
+                status: 200,
+                data: [mockInterestingPlaces]
+            }));
 
-        const response = await request(server)
-            .get('/places/:id')
-            .set({'secret_key': process.env.API_SECRET_KEY})
-            .send(mockInterestingPlaces.routeId)
 
-        expect(response.status).toBe(200)
-        expect(response.body.length).toBe(1)
-        expect(response.body[0]).toHaveProperty('name', mockInterestingPlaces.name)
+        await getEventHandler({type: RouteCheckerEventType.CREATED})(mockRouteCheckerEventData)
+
+        expect(findPlacesByBBoxSpy).toHaveBeenCalledTimes(1)
+        expect(publishMessageSpy).toHaveBeenCalledTimes(1)
+        expect(interestingPlacesModelSpy).toHaveBeenCalledTimes(1)
+
+    })
+
+    test('RouteCheckerEventType.CREATED - status 500', async () => {
+        const publishMessageSpy = jest.spyOn(PubSubClient.prototype, 'publishMessage');
+        const interestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'insertMany');
+        const findPlacesByBBoxSpy = jest.spyOn(MapService, 'findPlacesByBBox')
+            .mockReturnValue(Promise.resolve({
+                status: 500,
+                data: [mockInterestingPlaces]
+            }));
+
+
+        await getEventHandler({type: RouteCheckerEventType.CREATED})(mockRouteCheckerEventData)
+
+        expect(findPlacesByBBoxSpy).toHaveBeenCalledTimes(1)
+        expect(publishMessageSpy).toHaveBeenCalledTimes(0)
+        expect(interestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+    })
+
+    test('RouteCheckerEventType.CREATED - routeId empty ', async () => {
+        const publishMessageSpy = jest.spyOn(PubSubClient.prototype, 'publishMessage');
+        const interestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'insertMany');
+        const findPlacesByBBoxSpy = jest.spyOn(MapService, 'findPlacesByBBox')
+            .mockReturnValue(Promise.resolve({
+                status: 200,
+                data: [mockInterestingPlaces]
+            }));
+
+
+        await getEventHandler({type: RouteCheckerEventType.CREATED})({...mockRouteCheckerEventData, _id: ""})
+
+        expect(findPlacesByBBoxSpy).toHaveBeenCalledTimes(0)
+        expect(publishMessageSpy).toHaveBeenCalledTimes(0)
+        expect(interestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+
+    })
+
+    test('RouteCheckerEventType.CREATED - coordinates empty ', async () => {
+        const publishMessageSpy = jest.spyOn(PubSubClient.prototype, 'publishMessage');
+        const interestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'insertMany');
+        const findPlacesByBBoxSpy = jest.spyOn(MapService, 'findPlacesByBBox')
+            .mockReturnValue(Promise.resolve({
+                status: 200,
+                data: [mockInterestingPlaces]
+            }));
+
+
+        await getEventHandler({type: RouteCheckerEventType.CREATED})({...mockRouteCheckerEventData, coordinates: []})
+
+        expect(findPlacesByBBoxSpy).toHaveBeenCalledTimes(0)
+        expect(publishMessageSpy).toHaveBeenCalledTimes(0)
+        expect(interestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+
+    })
+
+    //RouteCheckerEventType.UPDATED
+    test('RouteCheckerEventType.UPDATED - status 200', async () => {
+        const publishMessageSpy = jest.spyOn(PubSubClient.prototype, 'publishMessage');
+        const insertInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'insertMany');
+        const deleteInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'deleteMany');
+        const findPlacesByBBoxSpy = jest.spyOn(MapService, 'findPlacesByBBox')
+            .mockReturnValue(Promise.resolve({
+                status: 200,
+                data: [mockInterestingPlaces]
+            }));
+
+
+        await getEventHandler({type: RouteCheckerEventType.UPDATED})(mockRouteCheckerEventData)
+
+        expect(findPlacesByBBoxSpy).toHaveBeenCalledTimes(1)
+        expect(publishMessageSpy).toHaveBeenCalledTimes(1)
+        expect(insertInterestingPlacesModelSpy).toHaveBeenCalledTimes(1)
+        expect(deleteInterestingPlacesModelSpy).toHaveBeenCalledTimes(1)
+
+    })
+
+    test('RouteCheckerEventType.UPDATED - status 500', async () => {
+        const publishMessageSpy = jest.spyOn(PubSubClient.prototype, 'publishMessage');
+        const insertInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'insertMany');
+        const deleteInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'deleteMany');
+        const findPlacesByBBoxSpy = jest.spyOn(MapService, 'findPlacesByBBox')
+            .mockReturnValue(Promise.resolve({
+                status: 500,
+                data: [mockInterestingPlaces]
+            }));
+
+
+        await getEventHandler({type: RouteCheckerEventType.UPDATED})(mockRouteCheckerEventData)
+
+        expect(findPlacesByBBoxSpy).toHaveBeenCalledTimes(1)
+        expect(publishMessageSpy).toHaveBeenCalledTimes(0)
+        expect(insertInterestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+        expect(deleteInterestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+    })
+
+    test('RouteCheckerEventType.UPDATED - routeId empty ', async () => {
+        const publishMessageSpy = jest.spyOn(PubSubClient.prototype, 'publishMessage');
+        const insertInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'insertMany');
+        const deleteInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'deleteMany');
+        const findPlacesByBBoxSpy = jest.spyOn(MapService, 'findPlacesByBBox')
+            .mockReturnValue(Promise.resolve({
+                status: 200,
+                data: [mockInterestingPlaces]
+            }));
+
+
+        await getEventHandler({type: RouteCheckerEventType.UPDATED})({...mockRouteCheckerEventData, _id: ""})
+
+        expect(findPlacesByBBoxSpy).toHaveBeenCalledTimes(0)
+        expect(publishMessageSpy).toHaveBeenCalledTimes(0)
+        expect(insertInterestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+        expect(deleteInterestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+
+    })
+
+    test('RouteCheckerEventType.UPDATED - coordinates empty ', async () => {
+        const publishMessageSpy = jest.spyOn(PubSubClient.prototype, 'publishMessage');
+        const insertInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'insertMany');
+        const deleteInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'deleteMany');
+        const findPlacesByBBoxSpy = jest.spyOn(MapService, 'findPlacesByBBox')
+            .mockReturnValue(Promise.resolve({
+                status: 200,
+                data: [mockInterestingPlaces]
+            }));
+
+
+        await getEventHandler({type: RouteCheckerEventType.UPDATED})({...mockRouteCheckerEventData, coordinates: []})
+
+        expect(findPlacesByBBoxSpy).toHaveBeenCalledTimes(0)
+        expect(publishMessageSpy).toHaveBeenCalledTimes(0)
+        expect(insertInterestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+        expect(deleteInterestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+
+    })
+
+    // RouteCheckerEventType.DELETED
+    test('RouteCheckerEventType.DELETED - successful ', async () => {
+        const deleteInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'deleteMany');
+        await getEventHandler({type: RouteCheckerEventType.DELETED})(mockRouteCheckerEventData)
+        expect(deleteInterestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+
+    })
+
+    test('RouteCheckerEventType.DELETED - routeId empty ', async () => {
+        const deleteInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'deleteMany');
+        await getEventHandler({type: RouteCheckerEventType.DELETED})({...mockRouteCheckerEventData, _id: ""})
+        expect(deleteInterestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+
+    })
+
+    test('RouteCheckerEventType.DELETED - coordinates empty ', async () => {
+        const deleteInterestingPlacesModelSpy = jest.spyOn(InterestingPlacesModel, 'deleteMany');
+        await getEventHandler({type: RouteCheckerEventType.DELETED})({...mockRouteCheckerEventData, coordinates: []})
+        expect(deleteInterestingPlacesModelSpy).toHaveBeenCalledTimes(0)
+
     })
 
 })
