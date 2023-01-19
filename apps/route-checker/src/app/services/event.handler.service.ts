@@ -10,7 +10,7 @@ const eventsHandlers = {
 }
 
 function routeCreatedHandler(event: RouteCheckerEventData) {
-    if (!event?._id?.length)
+    if (!event?._id?.length || !event?.coordinates?.length)
         return;
     mapService.findPlacesByBBox(event.coordinates).then(response => {
         if (isOK(response)) {
@@ -23,7 +23,7 @@ function routeCreatedHandler(event: RouteCheckerEventData) {
 }
 
 function routeUpdatedHandler(event: RouteCheckerEventData) {
-    if (!event?._id?.length)
+    if (!event?._id?.length || !event?.coordinates?.length)
         return;
     mapService.findPlacesByBBox(event.coordinates).then(response => {
         if (!isOK(response))
@@ -37,7 +37,7 @@ function routeUpdatedHandler(event: RouteCheckerEventData) {
 }
 
 async function routeDeletedHandler(event: RouteCheckerEventData) {
-    if (!event?._id?.length)
+    if (!event?._id?.length || !event?.coordinates?.length )
         return;
     await interestingPlacesService.removeInterestingPlaces(event._id);
 }
@@ -55,7 +55,7 @@ function isOK(response: any) {
     return response?.status === 200;
 }
 
-export function getEventHandler(attributes: any): (payload: string) => Promise<void> {
+export function getEventHandler(attributes: any): (event: RouteCheckerEventData) => Promise<void> {
     const {type} = attributes
     return eventsHandlers[type]
 }

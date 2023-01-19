@@ -1,4 +1,4 @@
-import {logger, PubSubClient} from '@bike4life/commons'
+import {logger, PubSubClient, RouteCheckerEventData} from '@bike4life/commons'
 import {Message} from '@google-cloud/pubsub'
 import {pubSubSettings} from "../../../settings";
 import {getEventHandler} from "../services/event.handler.service";
@@ -17,9 +17,15 @@ export default async function startPullListener(): Promise<void> {
 }
 
 async function messageOn(message: Message) {
-    const eventHandler = getEventHandler(message.attributes)
-    await eventHandler?.(JSON.parse(message.data.toString()))
-    message.ack()
+    try {
+        const eventHandler = getEventHandler(message.attributes)
+        const data: RouteCheckerEventData = getEventData(message);
+        data && await eventHandler?.(data);
+        message.ack()
+    } catch (error) {
+        message.ack()
+        logError(error)
+    }
 }
 
 function errorOn(err) {
@@ -30,4 +36,13 @@ function errorOn(err) {
 function logError(err) {
     console.log(err)
     logger.error({error: err})
+}
+
+export function getEventData(message: Message): RouteCheckerEventData {
+    try {
+        return JSON.parse(message.data.toString());
+    } catch (err) {
+        logError(err)
+        return null;
+    }
 }

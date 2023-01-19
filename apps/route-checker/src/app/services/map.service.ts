@@ -1,7 +1,7 @@
-import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
-import { mapSettings } from "../../../settings";
-import { findMax, findMin } from "../util/utils";
-import { Coordinates, InterestingPlaces } from "@bike4life/commons";
+import axios, {AxiosRequestConfig} from 'axios';
+import {mapSettings} from "../../../settings";
+import {findMax, findMin} from "../util/utils";
+import {Coordinates} from "@bike4life/commons";
 
 const config: AxiosRequestConfig = {
     headers: {
@@ -11,13 +11,13 @@ const config: AxiosRequestConfig = {
 };
 
 class MapService {
-    findPlacesByRadius(coordinates: Coordinates, radius = 1000): AxiosPromise<InterestingPlaces[]> {
+    findPlacesByRadius(coordinates: Coordinates, radius = 1000): Promise<any> {
         return axios
             .get(`${mapSettings.url}/radius?apikey=${mapSettings.key}&radius=${radius}&lon=${coordinates.lon}&lat=${coordinates.lat}&format=json`, config);
     }
 
-    findPlacesByBBox(coordinates: Coordinates[]): AxiosPromise<InterestingPlaces[]> {
-        if (!coordinates?.length)
+    findPlacesByBBox(coordinates: Coordinates[]): Promise<any> {
+        if (!coordinates?.length || !mapSettings?.url.length || !mapSettings?.key.length)
             return Promise.resolve(null);
 
         const lonMin = findMin("lon", coordinates);
