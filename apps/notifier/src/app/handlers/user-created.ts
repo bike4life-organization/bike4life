@@ -1,7 +1,6 @@
 import {
   NotifierMessageTypes,
   UserCreatedEventMessage,
-  logger,
 } from "@bike4life/commons";
 import nunjucksService from "../services/nunjucks.service";
 import sendGridService from "../services/sendgrid.service";
@@ -19,7 +18,7 @@ function isUserCreatedEventMessage(
 
 export async function userCreatedHandler(payload: unknown) {
   if (!isUserCreatedEventMessage(payload)) {
-    logger.info("Invalid payload", { payload: JSON.stringify(payload) });
+    throw new Error("Invalid payload");
   }
   const subject = "Welcome to Bike4Life";
   const emailTemplate = "usersCreatedCorrectly.html";

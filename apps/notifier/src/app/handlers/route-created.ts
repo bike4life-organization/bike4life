@@ -1,7 +1,6 @@
 import {
   NotifierMessageTypes,
   RouteCreatedEventMessage,
-  logger,
 } from "@bike4life/commons";
 import nunjucksService from "../services/nunjucks.service";
 import sendGridService from "../services/sendgrid.service";
@@ -20,7 +19,7 @@ function isRouteCreatedEventMessage(
 
 export async function routeCreatedHandler(payload: unknown) {
   if (!isRouteCreatedEventMessage(payload)) {
-    logger.info("Invalid payload", { payload: JSON.stringify(payload) });
+    throw new Error("Invalid payload");
   }
   const subject = "Your route has been created";
   const emailTemplate = "routeCreatedCorrectly.html";
