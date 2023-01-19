@@ -1,0 +1,81 @@
+openapi: 3.0.3
+info:
+  title: Route Checker - Api
+  description: Microservice is in charge of searching existing places of interest along the coordinates belonging to a route.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3335
+tags:
+  - name: Interesting places
+    description: Interesting places belonging to a route.
+
+paths:
+  /places/{routeId}:
+    get:
+      tags:
+        - Interesting places
+      summary: Find interesting places by routeId
+      security:
+        - ApiKeyAuth: [ ]
+      parameters:
+        - name: routeId
+          in: path
+          description: ID of route
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/places'
+        '401':
+          $ref: "#/components/responses/Unauthorized"
+        '403':
+          $ref: "#/components/responses/Forbidden"
+        '404':
+          $ref: "#/components/responses/NotFound"
+
+components:
+  responses:
+    Unauthorized:
+      description: Unauthorized
+    Forbidden:
+      description: You are not allowed to access this resource
+    NotFound:
+      description: Not found
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: secret_key
+
+  schemas:
+    places:
+      type: object
+      properties:
+        xid:
+          type: string
+        name:
+          type: string
+        kinds:
+          type: string
+        osm:
+          type: string
+        wikidata:
+          type: string
+        point:
+          type: object
+        rate:
+          type: number
+        routeId:
+          type: string
+      required:
+        - xid
+        - kinds
+        - point
+        - routeId
