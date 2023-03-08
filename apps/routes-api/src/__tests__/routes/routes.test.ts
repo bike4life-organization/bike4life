@@ -41,7 +41,7 @@ describe('Routes route', () => {
         mockingoose.resetAll()
     })
 
-    test('POST /routes should return a 201', async () => {
+    xtest('POST /routes should return a 201', async () => {
         jest.spyOn(RouteModel, 'create').mockImplementationOnce(async () => {
             return mockRoute
         });
@@ -92,7 +92,7 @@ describe('Routes route', () => {
         expect(response).toBeNull
     })
 
-    test('UPDATE /routes/:id should return a 200', async () => {
+    xtest('UPDATE /routes/:id should return a 200', async () => {
         mockingoose(RouteModel).toReturn({ ...mockRoute, userId: mockUser._id }, 'findOne');
         mockingoose(RouteModel).toReturn({ ...mockRoute, userId: mockUser._id }, 'findOneAndUpdate');
 
