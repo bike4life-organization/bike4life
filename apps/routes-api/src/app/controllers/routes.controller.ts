@@ -14,7 +14,7 @@ class RoutesController {
       const routeId = req.params.id
       const loggedUserId = req.user._id
       await this.routesService.removeRoute(routeId, loggedUserId)
-      res.sendStatus(200)
+      res.sendStatus(204)
     } catch (error) {
       const validatedError = checkError(error)
       next(validatedError);
@@ -24,6 +24,9 @@ class RoutesController {
   public list = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
       const routes = await this.routesService.listRoutes(req.user._id)
+      if (!routes) {
+        return res.status(404).send({ message: 'Routes not found' })
+      }
       res.send(routes)
     } catch (error) {
       const validatedError = checkError(error)
@@ -36,7 +39,7 @@ class RoutesController {
       const { id } = req.params
       const loggedUserId = req.user._id
       const route = await this.routesService.getRouteById(id)
-      if (!route) {
+      if (!route._id) {
         return res.status(404).send({ message: 'Route not found' })
       }
       if (route.userId !== loggedUserId) {
@@ -55,7 +58,7 @@ class RoutesController {
       newRoute.userId = req.user._id
       newRoute.userEmail = req.user.email
       await this.routesService.createRoute(newRoute)
-      res.sendStatus(200)
+      res.sendStatus(201)
     } catch (error) {
       const validatedError = checkError(error)
       next(validatedError)
@@ -67,7 +70,12 @@ class RoutesController {
       const newRoute = req.body
       const idRoute = req.params.id
       const loggedUserId = req.user._id
-
+      if (newRoute._id) {
+        return res.status(403).send({ error: 'The route id is immutable, you can not change it' });
+      }
+      if (newRoute.date && !Date.parse(newRoute.date)) {
+        return res.status(400).send({ error: 'Invalid date format' });
+      }
       await this.routesService.updateRoute(newRoute, idRoute, loggedUserId)
       res.sendStatus(200)
     } catch (error) {
